@@ -1,220 +1,105 @@
-import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TouchableOpacity,
-  Alert,
-  Button,
-  SafeAreaView,
-  TextInput,
-  Image,
-  ScrollView,
-} from "react-native";
-import Ionicons from "@expo/vector-icons/Ionicons";
-import firebase, { registerUser } from "./firebaseConfig";
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+import Toast from 'react-native-toast-message';
 
-console.disableYellowBox = true;
+import Login from "./src/screens/Login";
+import CreateAccount from "./src/screens/CreateAccount";
+import TabScreen from "./src/screens/TabScreen";
+/*
+import CriarTreino from "./src/screens/Treinos/CriarTreino";
+import Peitoral from './src/screens/Treinos/CriarTreino/Peitoral';
+import Ombro from './src/screens/Treinos/CriarTreino/Ombro';
+import Costas from './src/screens/Treinos/CriarTreino/Costas';
+import Biceps from './src/screens/Treinos/CriarTreino/Biceps';
+import Triceps from './src/screens/Treinos/CriarTreino/Triceps';
+import Inferiores from './src/screens/Treinos/CriarTreino/Inferiores';
+import Abdominal from './src/screens/Treinos/CriarTreino/Abdominal';
+import DetalheExercicio from './src/screens/Treinos/CriarTreino/DetalheExercicio';
+import TreinoSelecionado from './src/screens/Treinos/TreinoSelecionado';
+import ExercicioSelecionado from "./src/screens/Treinos/ExercicioSelecionado";
+*/
+const Stack = createStackNavigator();
+//const Tab = createBottomTabNavigator();
 
-export default function Home() {
-  const [email, setEmail] = useState("");
-  const [nomeCompleto, setNomeCompleto] = useState("");
-  const [senha, setSenha] = useState("");
-  const [confirmarSenha, setConfirmarSenha] = useState("");
-
-  async function handleCadastro() {
-    if (
-      senha === "" &&
-      confirmarSenha === "" &&
-      nomeCompleto === "" &&
-      email === ""
-    ) {
-      Alert.alert("Erro", "Preencha todos os campos");
-      return;
-    }
-
-    if (senha !== confirmarSenha) {
-      Alert.alert("Erro", "Senha e Confirmar Senha devem ser iguais");
-      return;
-    }
-
-    if (senha === "") {
-      Alert.alert("Erro", "Senha deve ser preenchida");
-      return;
-    }
-
-    if (confirmarSenha === "") {
-      Alert.alert("Erro", "Confirmação da senha deve ser preenchida");
-      return;
-    }
-
-    if (nomeCompleto === "") {
-      Alert.alert("Erro", "Nome deve ser preenchido");
-      return;
-    }
-
-    if (email === "") {
-      Alert.alert("Erro", "Email deve ser preenchido");
-      return;
-    }
-
-    try {
-      await registerUser(email, nomeCompleto, senha);
-    } catch (error) {
-      // Lida com erros de registro
-    }
-  }
-
+const App = () => {
   return (
-    <View style={styles.container}>
-      <SafeAreaView style={styles.form}>
-        <View></View>
-
-        <View style={styles.inputUsuario}>
-          <Ionicons
-            name="mail"
-            id="input-usuario"
-            size={32}
-            color="#fff"
-            style={styles.icon}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Email"
-            fontSize={16}
-            placeholderTextColor={"#fff"}
-            color={"#fff"}
-            value={email}
-            onChangeText={(text) => setEmail(text)}
-          />
-        </View>
-
-        <View style={styles.inputUsuario}>
-          <Ionicons
-            id="input-usuario"
-            size={32}
-            color="#fff"
-            style={styles.icon}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Nome Completo"
-            fontSize={16}
-            placeholderTextColor={"#fff"}
-            color={"#fff"}
-            value={nomeCompleto}
-            onChangeText={(text) => setNomeCompleto(text)}
-          />
-        </View>
-
-        <View style={styles.inputUsuario}>
-          <Ionicons
-            id="input-icon-senha"
-            size={32}
-            color="#fff"
-            style={styles.icon}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Senha"
-            id="input-senha"
-            fontSize={16}
-            placeholderTextColor={"#fff"}
-            color={"#fff"}
-            value={senha}
-            onChangeText={(text) => setSenha(text)}
-          />
-        </View>
-        <View style={styles.inputUsuario}>
-          <Ionicons
-            id="input-icon-senha"
-            size={32}
-            color="#fff"
-            style={styles.icon}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Confirmar Senha"
-            id="input-confirmar-senha"
-            fontSize={16}
-            placeholderTextColor={"#fff"}
-            color={"#fff"}
-            value={confirmarSenha}
-            onChangeText={(text) => setConfirmarSenha(text)}
-          />
-        </View>
-
-        <TouchableOpacity style={styles.button} onPress={handleCadastro}>
-          <Text style={styles.text1}>CADASTRAR</Text>
-        </TouchableOpacity>
-
-        <Button
-          style={styles.buttonText}
-          title="Já tem uma conta?"
-          color="transparent"
-          marginTop="50"
+    <NavigationContainer>
+      <Stack.Navigator>
+        <Stack.Screen
+          name="Login"
+          component={Login}
+          options={{ headerShown: false }}
         />
-      </SafeAreaView>
-    </View>
+        <Stack.Screen
+          name="Tabs"
+          component={TabScreen}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="CreateAccount"
+          component={CreateAccount}
+          options={{ headerShown: false }}
+        />
+       {/*  <Stack.Screen
+          name="CriarTreino"
+          component={CriarTreino}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Peitoral"
+          component={Peitoral}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Ombro"
+          component={Ombro}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Costas"
+          component={Costas}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Biceps"
+          component={Biceps}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Triceps"
+          component={Triceps}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Inferiores"
+          component={Inferiores}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="Abdominal"
+          component={Abdominal}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="DetalheExercicio"
+          component={DetalheExercicio}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="TreinoSelecionado"
+          component={TreinoSelecionado}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ExercicioSelecionado"
+          component={ExercicioSelecionado}
+          options={{ headerShown: false }}
+        />*/}
+      </Stack.Navigator>
+      <Toast ref={(ref) => Toast.setRef(ref)} />
+    </NavigationContainer>
   );
-}
+};
 
-const styles = StyleSheet.create({
-  form: {
-    alignItems: "center",
-    justifyContent: "center",
-    backgroundColor: "#000000",
-    height: 300,
-    width: 280,
-    borderRadius: 15,
-    maxHeight: "100vh",
-    maxWidth: "100vw",
-  },
-  button: {
-    backgroundColor: "rgba(255, 57, 83, 1)",
-    padding: 10,
-    borderRadius: 5,
-  },
-  text1: {
-    color: "#fff",
-    fontWeight: "bold",
-  },
-  input: {
-    color: "rgba(255, 255, 255, 0.24)",
-    borderStyle: "solid",
-    borderColor: "rgba(255, 57, 83, 1)",
-    borderWidth: 1,
-    borderTopEndRadius: 10,
-    borderBottomEndRadius: 10,
-    width: 200,
-    fontSize: 20,
-    marginBottom: 30,
-    padding: 9.5,
-  },
-
-  container: {
-    backgroundColor: "#000",
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-
-  inputUsuario: {
-    display: "flex",
-    flexDirection: "row",
-  },
-  icon: {
-    backgroundColor: "rgba(255, 57, 83, 1)",
-    height: 49,
-    paddingBottom: 1,
-    borderTopLeftRadius: 10,
-    borderBottomLeftRadius: 10,
-    textAlign: "center",
-    justifyContent: "center",
-    paddingTop: 5,
-    paddingLeft: 5,
-  },
-  text: {
-    color: "white",
-  },
-});
+export default App;
