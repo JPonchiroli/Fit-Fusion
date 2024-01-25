@@ -1,8 +1,6 @@
 import { initializeApp } from "firebase/app";
-import { getDatabase, ref, set } from "firebase/database";
+import { getDatabase } from "firebase/database";
 import {
-  getAuth,
-  createUserWithEmailAndPassword,
   initializeAuth,
   getReactNativePersistence,
 } from "firebase/auth";
@@ -18,32 +16,6 @@ const firebaseConfig = {
   appId: "1:713786136906:web:c50fa209f66ab8396549b3",
   measurementId: "G-W40DB8902G",
 };
-
-export async function registerUser(email, senha, nomeCompleto) {
-  try {
-    const userCredential = await createUserWithEmailAndPassword(
-      auth,
-      email,
-      senha
-    );
-    const uid = userCredential.user.uid;
-
-    // Salva informações no Realtime Database
-    await saveUserInfo(uid, { email, nomeCompleto, senha });
-
-    console.log(
-      "Usuário registrado com sucesso e informações salvas no banco de dados."
-    );
-  } catch (error) {
-    console.error("Erro ao registrar usuário:", error);
-    throw error;
-  }
-}
-
-export function saveUserInfo(uid, userInfo) {
-  const userRef = ref(getDatabase(app), `usuarios/${uid}`);
-  return set(userRef, userInfo);
-}
 
 const app = initializeApp(firebaseConfig);
 const auth = initializeAuth(app, {
