@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import firebase from "../../config/firebaseConfig";
+import { login } from "../../config/firebaseAuth";
 
 const Login = () => {
   const navigation = useNavigation();
@@ -19,17 +19,16 @@ const Login = () => {
 
   const loginSuccess = async () => {
     try {
-      const response = await firebase
-        .auth()
-        .signInWithEmailAndPassword(emailDoUsuario, senha);
+      const user = await login(emailDoUsuario, senha);
 
-      if (response.user) {
+      if (user) {
         setEmailDoUsuario("");
         setSenha("");
         navigation.navigate("Tabs");
       }
     } catch (error) {
       Alert.alert("Erro", error.message);
+      console.log(error.message);
     }
   };
 

@@ -1,6 +1,12 @@
 import { initializeApp } from "firebase/app";
 import { getDatabase, ref, set } from "firebase/database";
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  initializeAuth,
+  getReactNativePersistence,
+} from "firebase/auth";
+import ReactNativeAsyncStorage from '@react-native-async-storage/async-storage';
 
 const firebaseConfig = {
   apiKey: "AIzaSyAY6a8E5AUMIAl5wLyaNpuAzdUVVN9GFno",
@@ -35,12 +41,13 @@ export async function registerUser(email, senha, nomeCompleto) {
 }
 
 export function saveUserInfo(uid, userInfo) {
-  const userRef = ref(database, `usuarios/${uid}`);
+  const userRef = ref(getDatabase(app), `usuarios/${uid}`);
   return set(userRef, userInfo);
 }
 
 const app = initializeApp(firebaseConfig);
-export const database = getDatabase(app);
-export const auth = getAuth(app);
+const auth = initializeAuth(app, {
+  persistence: getReactNativePersistence(ReactNativeAsyncStorage),
+});
 
-export default app;
+export { app, auth, getDatabase };
