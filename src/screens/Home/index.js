@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, ImageBackground } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { recuperaTreinosDoUsuario, recuperaInfoUsuario } from "../../config/firebaseAuth";
-import { auth as firebaseAuth } from "../../config/firebaseConfig";
+import { auth } from "../../config/firebaseConfig";
+import { auth as firebaseAuth1 } from "../../config/firebaseConfig";
 import { Feather } from "@expo/vector-icons";
 
 export default function Home({ navigation }) {
@@ -10,7 +11,7 @@ export default function Home({ navigation }) {
   const [treinosDoUsuario, setTreinosDoUsuario] = useState([]);
 
   useEffect(() => {
-    const unsubscribe = firebaseAuth.onAuthStateChanged(async (user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         setUserInfo(user);
 
@@ -23,8 +24,10 @@ export default function Home({ navigation }) {
     });
 
     return () => {
-      // Use a instância de autenticação diretamente de firebaseAuth
-      const treinosRef = firebaseAuth.database().ref(`treinos/${firebaseAuth.currentUser.uid}`);
+      // Use a instância de autenticação diretamente de firebaseAuth11111
+      const treinosRef = getDatabase().ref(`treinos/${user.uid}`);
+
+
       treinosRef.off('value');
     };
   }, []);
