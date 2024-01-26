@@ -64,14 +64,17 @@ export const recuperaTreinosDoUsuario = async (uid, setTreinosDoUsuario) => {
 
 export const recuperaInfoUsuario = async (uid, setUserInfo) => {
   try {
+    console.log('UID:', uid);
     const usuarioRef = ref(database, `usuarios/${uid}`);
     const usuarioSnapshot = await get(usuarioRef);
 
     if (usuarioSnapshot.exists()) {
+      console.log('SNAPSHOT EXIST');
       const usuarioInfo = usuarioSnapshot.val();
 
       setUserInfo((prevUserInfo) => ({
         ...prevUserInfo,
+        email: usuarioInfo.email,
         usuario: usuarioInfo.nomeCompleto,
         kg: usuarioInfo.kg,
         altura: usuarioInfo.altura,
