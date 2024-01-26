@@ -3,7 +3,6 @@ import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, ImageBackg
 import { LinearGradient } from 'expo-linear-gradient';
 import { recuperaTreinosDoUsuario, recuperaInfoUsuario } from "../../config/firebaseAuth";
 import { auth } from "../../config/firebaseConfig";
-import { auth as firebaseAuth1 } from "../../config/firebaseConfig";
 import { Feather } from "@expo/vector-icons";
 
 export default function Home({ navigation }) {
