@@ -2,23 +2,23 @@ import React, { useState, useEffect } from "react";
 import {
   View,
   Text,
+  TextInput,
   StyleSheet,
   TouchableOpacity,
   Image,
   ScrollView,
-  ImageBackground,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import {
-  recuperaTreinosDoUsuario,
-  recuperaInfoUsuario,
-} from "../../config/firebaseAuth";
+import { recuperaTreinosDoUsuario, enviarTreino } from "../../config/firebaseAuth";
 import { auth } from "../../config/firebaseConfig";
 import { Feather } from "@expo/vector-icons";
 
 export default function Home({ navigation }) {
+  const uid = auth.currentUser.uid;
   const [userInfo, setUserInfo] = useState(null);
   const [treinosDoUsuario, setTreinosDoUsuario] = useState([]);
+  const [nomeTreinoContainerVisible, setNomeTreinoContainerVisible] = useState(false);
+  const [nomeTreino, setNomeTreino] = useState("");
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -30,6 +30,16 @@ export default function Home({ navigation }) {
       }
     });
   }, []);
+
+  function validacaoTreino(){
+    if (nomeTreino === "") {
+      Alert.alert("Erro", "Preencha o nome do treino");
+      return;
+    }
+    enviarTreino(uid, nomeTreino);
+    setNomeTreino("");
+    setNomeTreinoContainerVisible(false);
+  }
 
   return (
     <View style={styles.container}>
@@ -78,8 +88,27 @@ export default function Home({ navigation }) {
           <Text style={styles.subTitleSection}>
             Aqui está listado todos os seus treinos
           </Text>
-
           <View style={styles.divider}></View>
+
+          {nomeTreinoContainerVisible && (
+            <View style={styles.nomeTreinoContainer}>
+              <Text style={styles.nomeTreinoTitle}>Informe o nome do Treino</Text>
+              <TextInput
+                style={styles.nomeTreinoInput}
+                placeholder="Nome do Treino"
+                placeholderTextColor={"rgba(255, 255, 255, 0.24)"}
+                color={"#fff"}
+                onChangeText={(text) => setNomeTreino(text)}
+              />
+              <TouchableOpacity
+                style={styles.nomeTreinoTouchable}
+                onPress={validacaoTreino}
+              >
+                <Text style={styles.nomeTreinoTitle}>Enviar</Text>
+              </TouchableOpacity>
+            </View>
+          )}
+
           <ScrollView style={styles.scrollViewMenu}>
             {treinosDoUsuario.length > 0 ? (
               treinosDoUsuario.map((treino) => (
@@ -109,7 +138,6 @@ export default function Home({ navigation }) {
                 size={30}
                 color={"rgba(255, 57, 83, 1)"}
               />
-              <Text>asdasd</Text>
             </TouchableOpacity>
           </View>
         </View>
@@ -155,7 +183,7 @@ const styles = StyleSheet.create({
   },
   scrollViewMenu: {
     flexDirection: "column",
-    height: 500
+    height: 500,
   },
   nomeTreinoContainerHidden: {
     display: "none",
@@ -182,6 +210,7 @@ const styles = StyleSheet.create({
     borderBottomColor: "rgba(255, 57, 83, 1)",
     borderWidth: 2,
     padding: 5,
+    width: 200,
   },
   nomeTreinoTouchable: {
     backgroundColor: "rgba(255, 57, 83, 1)",
@@ -221,8 +250,8 @@ const styles = StyleSheet.create({
     margin: 5,
     padding: 30,
     position: "absolute",
-    top: '87%',
-    left: '10%'
+    top: "87%",
+    left: "10%",
   },
   criarTreinoButton: {
     backgroundColor: "#fff",

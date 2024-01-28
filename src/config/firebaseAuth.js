@@ -1,5 +1,9 @@
-import { getDatabase, ref, set, onValue, get } from "firebase/database"
-import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "firebase/auth";
+import { getDatabase, ref, set, onValue, get, push } from "firebase/database";
+import {
+  getAuth,
+  signInWithEmailAndPassword,
+  createUserWithEmailAndPassword,
+} from "firebase/auth";
 import { app } from "./firebaseConfig";
 
 const Auth = getAuth(app);
@@ -31,7 +35,6 @@ export function saveUserInfo(uid, userInfo) {
   return set(userRef, userInfo);
 }
 
-
 export const login = async (email, senha) => {
   try {
     const response = await signInWithEmailAndPassword(Auth, email, senha);
@@ -41,35 +44,34 @@ export const login = async (email, senha) => {
   }
 };
 
-
 export const recuperaTreinosDoUsuario = async (uid, setTreinosDoUsuario) => {
   try {
     const snapshot = await ref(getDatabase(), `treinos/${uid}`);
     onValue(snapshot, (data) => {
       if (data.exists()) {
         const treinosUsuarioData = data.val();
-        const treinosUsuarioArray = Object.keys(treinosUsuarioData).map((treinoUid) => ({
-          treinoUid,
-          ...treinosUsuarioData[treinoUid],
-        }));
+        const treinosUsuarioArray = Object.keys(treinosUsuarioData).map(
+          (treinoUid) => ({
+            treinoUid,
+            ...treinosUsuarioData[treinoUid],
+          })
+        );
         setTreinosDoUsuario(treinosUsuarioArray);
       } else {
-        console.log('Nenhum treino encontrado para o usuário.');
+        console.log("Nenhum treino encontrado para o usuário.");
       }
     });
   } catch (error) {
-    console.error('Erro ao recuperar treinos do usuário:', error);
+    console.error("Erro ao recuperar treinos do usuário:", error);
   }
 };
 
 export const recuperaInfoUsuario = async (uid, setUserInfo) => {
   try {
-    console.log('UID:', uid);
     const usuarioRef = ref(database, `usuarios/${uid}`);
     const usuarioSnapshot = await get(usuarioRef);
 
     if (usuarioSnapshot.exists()) {
-      console.log('SNAPSHOT EXIST');
       const usuarioInfo = usuarioSnapshot.val();
 
       setUserInfo((prevUserInfo) => ({
@@ -80,9 +82,30 @@ export const recuperaInfoUsuario = async (uid, setUserInfo) => {
         altura: usuarioInfo.altura,
       }));
     } else {
-      console.log('Nenhum dado encontrado para o usuário.');
+      console.log("Nenhum dado encontrado para o usuário.");
     }
   } catch (error) {
-    console.error('Erro ao recuperar informações do nó usuarios:', error);
+    console.error("Erro ao recuperar informações do nó usuarios:", error);
+  }
+};
+
+export const enviarTreino = async (uid, nomeTreino) => {
+  console.log('UID: ' + uid);
+  try {
+    // Verifique se o usuário está autenticado antes de prosseguir
+    if (uid) {
+      // Adicione o treino ao nó 'treinos' no Firebase usando o UID do usuário
+      const treinosRef = ref(getDatabase(), `treinos/${uid}`);
+      
+      await push(treinosRef, {
+        nomeTreino: nomeTreino,
+      });
+
+      console.log("Treino adicionado com sucesso!");
+    } else {
+      console.error("Usuário não autenticado.");
+    }
+  } catch (error) {
+    console.error("Erro ao adicionar treino:", error);
   }
 };
