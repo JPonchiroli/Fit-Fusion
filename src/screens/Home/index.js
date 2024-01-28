@@ -21,14 +21,6 @@ export default function Home({ navigation }) {
         recuperaTreinosDoUsuario(user.uid, setTreinosDoUsuario);
       }
     });
-
-    return () => {
-      // Use a instância de autenticação diretamente de firebaseAuth11111
-      const treinosRef = getDatabase().ref(`treinos/${user.uid}`);
-
-
-      treinosRef.off('value');
-    };
   }, []);
 
 

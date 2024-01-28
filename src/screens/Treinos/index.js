@@ -1,159 +1,161 @@
-import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, TouchableOpacity, ScrollView, Alert, TextInput } from 'react-native';
-import { useNavigation } from "@react-navigation/native";
-import { LinearGradient } from 'expo-linear-gradient';
-import { recuperaTreinosDoUsuario } from "../../config/firebaseAuth";
-import { auth } from "../../config/firebaseConfig"
+import React, { useState, useEffect } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  TouchableOpacity,
+  Image,
+  ScrollView,
+  ImageBackground,
+} from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import {
+  recuperaTreinosDoUsuario,
+  recuperaInfoUsuario,
+} from "../../config/firebaseAuth";
+import { auth } from "../../config/firebaseConfig";
 import { Feather } from "@expo/vector-icons";
 
-export default function Treinos() {
-  const navigation = useNavigation();
-
-  const usuarioUID = auth.currentUser.uid;
+export default function Home({ navigation }) {
+  const [userInfo, setUserInfo] = useState(null);
   const [treinosDoUsuario, setTreinosDoUsuario] = useState([]);
-  const [nomeTreino, setNomeTreino] = useState("");
-  const [nomeTreinoContainerVisible, setNomeTreinoContainerVisible] = useState(false);
-  const user = auth.currentUser;
-
-
-  var number = 0
-  const getRandomNumber = () => number + 1;
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         setUserInfo(user);
-        console.log("USUARIO" + user);
 
-        const { database } = await initializeFirebase(); // Use a função inicializada
         // Substitua a chamada da função recuperaTreinosDoUsuario
-        recuperaTreinosDoUsuario(user.uid, setTreinosDoUsuario, database);
+        recuperaTreinosDoUsuario(user.uid, setTreinosDoUsuario);
       }
     });
-
-    // Cleanup do event listener quando o componente for desmontado
-
-    return () => {
-      // Use a instância de autenticação diretamente de firebaseAuth11111
-      const treinosRef = database.ref(`treinos/${user.uid}`);
-      treinosRef.off('value');
-    };
-  }, [user]); // Adicionando usuarioUID como dependência para recriar o event listener se o UID do usuário mudar
-
-  /*const enviarTreino = () => {
-    if (nomeTreino === '') {
-      Alert.alert("Erro", "Preencha o nome do treino");
-      return;
-    }
-    // Verifique se o usuário está autenticado antes de prosseguir
-    if (user) {
-      // Adicione o treino ao nó 'treinos' no Firebase usando o UID do usuário
-      firebase
-        .database()
-        .ref(`treinos/${user.uid}`)
-        .push({
-          nomeTreino: nomeTreino,
-        })
-        .then(() => {
-          console.log("Treino adicionado com sucesso!");
-          // Limpe o estado após adicionar o treino, se necessário
-          setNomeTreino("");
-          setNomeTreinoContainerVisible(false);
-        })
-        .catch((error) => {
-          console.error("Erro ao adicionar treino:", error);
-        });
-    } else {
-      console.error("Usuário não autenticado.");
-    }
-  };*/
+  }, []);
 
   return (
     <View style={styles.container}>
       <LinearGradient
         style={{
-          width: '100%',
-          height: '100%',
+          width: "100%",
+          height: "100%",
         }}
         start={{ x: 0, y: 1 }}
         end={{ x: 1, y: 0 }}
-        colors={['#000', '#0f0f0f', 'rgba(15, 15, 15, 0.88)', '#121212', '#252525']}
+        colors={[
+          "#000",
+          "#0f0f0f",
+          "rgba(15, 15, 15, 0.88)",
+          "#121212",
+          "#252525",
+        ]}
       >
+        <LinearGradient
+          style={{
+            width: "100%",
+            height: 110,
 
-        <View style={styles.titleContainer}>
+            borderRadius: 10,
+            justifyContent: "center", // Align content in the center vertically
+            padding: 20, // Add some padding for better appearance
+          }}
+          start={{ x: 0, y: 1 }}
+          end={{ x: 1, y: 0 }}
+          colors={[
+            "rgba(245,90,110,1)",
+            "rgba(244,72,94,1)",
+            "rgba(219,64,84,1)",
+          ]}
+        >
+          <View style={styles.header}>
+            <Image
+              source={require("./../../img/BODY_IMG.png")}
+              style={styles.headerImage}
+            />
+          </View>
+        </LinearGradient>
 
-          <Text style={styles.title}>Treinos</Text>
+        <View style={styles.treinoss}>
+          <Text style={styles.titleSection}>Meus Treinos</Text>
+          <Text style={styles.subTitleSection}>
+            Aqui está listado todos os seus treinos
+          </Text>
 
-          {nomeTreinoContainerVisible && (
-            <View style={styles.nomeTreinoContainer}>
-              <Text style={styles.nomeTreinoTitle}>Informe o nome do Treino</Text>
-              <TextInput
-                style={styles.nomeTreinoInput}
-                placeholder="Nome do Treino"
-                placeholderTextColor={"rgba(255, 255, 255, 0.24)"}
-                color={"#fff"}
-                onChangeText={(text) => setNomeTreino(text)}
-              />
-              <TouchableOpacity
-                style={styles.nomeTreinoTouchable}
-              //onPress={enviarTreino}
-              >
-                <Text style={styles.nomeTreinoTitle}>Enviar</Text>
-              </TouchableOpacity>
-            </View>
-          )}
-
-          <ScrollView
-            horizontal={false} // Enable horizontal scrolling
-            style={styles.menuTreino}
-            height='80%'
-            width='90%'
-          >
-            <View>
-              {treinosDoUsuario.length > 0 ? (
-                treinosDoUsuario.map((treino) => (
-                  <TouchableOpacity style={styles.touchable} key={treino.uid} onPress={() => navigation.navigate('TreinoSelecionado', { treino })}>
-                    <Text style={styles.titleNumber}>{getRandomNumber()}</Text>
-                    <Text style={styles.title}>{treino.nomeTreino}</Text>
-                  </TouchableOpacity>
-                ))
-              ) : (
-                <Text>Não há treinos disponíveis.</Text>
-              )}
-            </View>
-
-
+          <View style={styles.divider}></View>
+          <ScrollView style={styles.scrollViewMenu}>
+            {treinosDoUsuario.length > 0 ? (
+              treinosDoUsuario.map((treino) => (
+                //console.log(treino.nomeTreino),
+                <TouchableOpacity
+                  style={styles.touchable}
+                  key={treino.uid}
+                  onPress={() =>
+                    navigation.navigate("TreinoSelecionado", { treino })
+                  }
+                >
+                  <Text style={styles.titleNumber}>1</Text>
+                  <Text style={styles.title}>{treino.nomeTreino}</Text>
+                </TouchableOpacity>
+              ))
+            ) : (
+              <Text>Não há treinos disponíveis.</Text>
+            )}
           </ScrollView>
           <View style={styles.touchable2}>
-            <TouchableOpacity onPress={() => setNomeTreinoContainerVisible(true)}>
-              <Feather style={styles.criarTreinoButton}
+            <TouchableOpacity
+              onPress={() => setNomeTreinoContainerVisible(true)}
+            >
+              <Feather
+                style={styles.criarTreinoButton}
                 name="plus"
                 size={30}
                 color={"rgba(255, 57, 83, 1)"}
-
               />
+              <Text>asdasd</Text>
             </TouchableOpacity>
           </View>
         </View>
       </LinearGradient>
     </View>
-
   );
-};
+}
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#000'
+    backgroundColor: "#000",
   },
-  titleContainer: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
-    marginTop: 50,
+  header: {
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
+    paddingTop: 20,
   },
-  title: {
-    color: '#FFF'
+  headerImage: {
+    width: "25%",
+    height: "100%",
+    marginBottom: 20,
+  },
+  titleSection: {
+    color: "#fff",
+    fontSize: 19,
+    fontWeight: "bold",
+  },
+  subTitleSection: {
+    color: "#d4d4d4",
+    fontSize: 16,
+  },
+  treinoss: {
+    padding: 20,
+    margin: 10,
+  },
+  divider: {
+    borderBottomColor: "#d4d4d4", // Set the color of the divider line
+    borderBottomWidth: 0.2, // Set the thickness of the divider line
+    marginVertical: 10, // Adjust the vertical spacing as needed
+  },
+  scrollViewMenu: {
+    flexDirection: "column",
+    height: 500
   },
   nomeTreinoContainerHidden: {
     display: "none",
@@ -189,43 +191,45 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   titleNumber: {
-    color: '#fff',
+    color: "#fff",
     marginRight: 10,
     borderWidth: 2,
-    borderColor: 'rgba(255, 57, 83, 1)',
+    borderColor: "rgba(255, 57, 83, 1)",
     padding: 15,
     borderRadius: 250,
-    fontWeight: 'bold',
-    width: '18%',
-    textAlign: 'center',
-    justifyContent: 'center',
-
+    fontWeight: "bold",
+    width: "18%",
+    textAlign: "center",
+    justifyContent: "center",
   },
   touchable: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
     borderBottomWidth: 3,
-    borderColor: '#fff',
+    borderColor: "#fff",
     margin: 5,
-    padding: 30
-
+    padding: 30,
+    width: 300,
   },
-
   touchable2: {
-    display: 'flex',
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'flex-end',
-    width: '100%',
+    display: "flex",
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "flex-end",
+    width: "100%",
     margin: 5,
-    padding: 30
-
+    padding: 30,
+    position: "absolute",
+    top: '87%',
+    left: '10%'
   },
   criarTreinoButton: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 150,
     padding: 10,
-
+  },
+  title: {
+    color: "#FFF",
   },
 });
