@@ -175,7 +175,6 @@ const styles = StyleSheet.create({
   subTitleSection: {
     color: '#d4d4d4',
     fontSize: 16,
-
   },
   linearGradientOverlay: {
     position: 'absolute',
