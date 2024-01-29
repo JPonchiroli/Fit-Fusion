@@ -17,7 +17,7 @@ import TabScreen from "./src/screens/TabScreen";
 //import Abdominal from './src/screens/Treinos/CriarTreino/Abdominal';
 //import DetalheExercicio from './src/screens/Treinos/CriarTreino/DetalheExercicio';
 import TreinoSelecionado from "./src/screens/Treinos/TreinoSelecionado";
-//import ExercicioSelecionado from "./src/screens/Treinos/ExercicioSelecionado";
+import ExercicioSelecionado from "./src/screens/Treinos/TreinoSelecionado/ExercicioSelecionado";
 
 const Stack = createStackNavigator();
 //const Tab = createBottomTabNavigator();
@@ -44,6 +44,11 @@ const App = () => {
         <Stack.Screen
           name="TreinoSelecionado"
           component={TreinoSelecionado}
+          options={{ headerShown: false }}
+        />
+        <Stack.Screen
+          name="ExercicioSelecionado"
+          component={ExercicioSelecionado}
           options={{ headerShown: false }}
         />
         {/*  <Stack.Screen
@@ -89,11 +94,6 @@ const App = () => {
         <Stack.Screen
           name="DetalheExercicio"
           component={DetalheExercicio}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="ExercicioSelecionado"
-          component={ExercicioSelecionado}
           options={{ headerShown: false }}
         />*/}
       </Stack.Navigator>
