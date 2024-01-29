@@ -227,7 +227,7 @@ const styles = StyleSheet.create({
   },
   scrollViewMenu: {
     flexDirection: "column",
-    height: 500,
+    height: "65%",
   },
   nomeTreinoContainerHidden: {
     display: "none",
@@ -270,7 +270,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: "rgba(255, 57, 83, 1)",
     padding: 15,
-    borderRadius: 250,
+    borderRadius: 200,
     fontWeight: "bold",
     textAlign: "center",
     justifyContent: "center",
@@ -279,11 +279,11 @@ const styles = StyleSheet.create({
     display: "flex",
     flexDirection: "row",
     alignItems: "center",
-    borderBottomWidth: 3,
-    borderColor: "#fff",
-    margin: 5,
-    padding: 30,
-    width: 300,
+    marginBottom: 10,
+    padding: 10,
+    backgroundColor: "#333",
+    borderRadius: 8,
+    height: 100
   },
   touchable2: {
     display: "flex",

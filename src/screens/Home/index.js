@@ -8,6 +8,26 @@ import { Feather } from "@expo/vector-icons";
 export default function Home({ navigation }) {
   const [userInfo, setUserInfo] = useState(null);
   const [treinosDoUsuario, setTreinosDoUsuario] = useState([]);
+  const trainingImages = [
+    require('./../../img/Imagens-fig/0.png'),
+    require('./../../img/Imagens-fig/1.png'),
+    require('./../../img/Imagens-fig/2.png'),
+    require('./../../img/Imagens-fig/3.png'),
+    require('./../../img/Imagens-fig/4.png'),
+    require('./../../img/Imagens-fig/5.png'),
+    require('./../../img/Imagens-fig/6.png'),
+    require('./../../img/Imagens-fig/7.png'),
+    require('./../../img/Imagens-fig/8.png'),
+    require('./../../img/Imagens-fig/9.png'),
+    require('./../../img/Imagens-fig/10.png'),
+  ];
+
+  const getRandomImage = () => {
+    const randomIndex = Math.floor(Math.random() * trainingImages.length);
+    return trainingImages[randomIndex];
+  };
+
+  const selectedImage = getRandomImage();
 
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
@@ -21,6 +41,8 @@ export default function Home({ navigation }) {
         recuperaTreinosDoUsuario(user.uid, setTreinosDoUsuario);
       }
     });
+
+    
   }, []);
 
 
@@ -62,18 +84,19 @@ export default function Home({ navigation }) {
             horizontal={true} // Enable horizontal scrolling
             style={styles.scrollViewMenu}
           >
-            {treinosDoUsuario.map((treino) => (
+            {treinosDoUsuario.map((treino, index) => (
 
               <TouchableOpacity
                 style={styles.touchableItem}
                 key={treino.uid}
                 onPress={() => navigation.navigate('TreinoSelecionado', { treino })}
               >
+                
                 <ImageBackground
-                  source={require("./../../img/treinoHome.png")}
-                  style={styles.backgroundImage}
-                  imageStyle={styles.imageStyle}
-                >
+       source={getRandomImage()}
+      style={styles.backgroundImage}
+      imageStyle={styles.imageStyle}
+    >
                   <LinearGradient
                     style={styles.linearGradientOverlay}
                     colors={['rgba(9, 9, 9, 9)', 'transparent']} // Inverta as cores aqui
