@@ -11,6 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { auth, storage } from "../../../config/firebaseConfig";
 import { getDownloadURL, ref } from "firebase/storage";
+import { deletarTreino } from "../../../config/firebaseAuth";
 import Toast from "react-native-toast-message";
 
 const TreinoSelecionado = ({ route }) => {
@@ -20,10 +21,8 @@ const TreinoSelecionado = ({ route }) => {
   const nomeTreino = treino.nomeTreino || "Nome do Treino Padrão";
   const exercicios = treino.exercicios || [];
   const usuarioUID = auth.currentUser.uid;
-
   const [imagensExercicios, setImagensExercicios] = useState([]);
-
-  const treinoUID = treino.uid;
+  const treinoUID = treino.treinoUid;
 
   useEffect(() => {
     // Verifica se 'exercicios' é um array, caso contrário, converte
@@ -77,37 +76,32 @@ const TreinoSelecionado = ({ route }) => {
 
     carregarImagensExercicios();
   }, [exercicios]);
-  /*
+  
     const handleDelete = () => {
         Alert.alert(
             'Confirmação',
-            'Deseja realmente excluir este cliente?',
+            'Deseja realmente excluir este Treino?',
             [
                 { text: 'Cancelar', style: 'cancel' },
-                { text: 'Confirmar', onPress: () => deleteCliente() },
+                { text: 'Confirmar', onPress: () => deleteTreino() },
             ],
             { cancelable: false }
         );
     };
 
-    const deleteCliente = async () => {
-        try {
-            await firebase.database().ref(`treinos/${usuarioUID}/${treinoUID}`).remove();
-            navigation.goBack();
-        } catch (error) {
-            console.error('Erro ao excluir cliente:', error);
-        }
-
+    function deleteTreino() {
+      deletarTreino(usuarioUID, treinoUID)
+      navigation.goBack();
         Toast.show({
             type: 'success',
             position: 'top',
             text1: 'Treino Excluído com Sucesso!',
             theme: "dark",
             progress: undefined,
-            visibilityTime: 1000,
+            visibilityTime: 2000,
         });
     };
-
+/*
     const handleAdicionarExercicio = () => {
         // Adicione o código para abrir a tela CriarTreino aqui
         navigation.navigate('CriarTreino');
@@ -183,7 +177,7 @@ const TreinoSelecionado = ({ route }) => {
 
       <TouchableOpacity
         style={styles.buttonDelete}
-        //onPress={handleDelete}
+        onPress={handleDelete}
       >
         <Text style={styles.deleteText}>Deletar</Text>
       </TouchableOpacity>

@@ -1,12 +1,10 @@
-import { getDatabase, ref, set, onValue, get, push } from "firebase/database";
+import { getDatabase, ref, set, onValue, get, push, ove } from "firebase/database";
 import {
   getAuth,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { app } from "./firebaseConfig";
-import { getDownloadURL, ref as storageRef } from 'firebase/storage';
-import { storage } from '../config/firebaseConfig';
 
 const Auth = getAuth(app);
 const database = getDatabase(app);
@@ -112,26 +110,13 @@ export const enviarTreino = async (uid, nomeTreino) => {
   }
 };
 
-export const carregarImagemExercicio = async (exercicio) => {
-  const caminhosRelativos = [
-    'Abdominal',
-    'Biceps',
-    'Costas',
-    'Ombro',
-    'Peito',
-    'Perna',
-    'Triceps',
-  ];
-
-  for (let i = 0; i < caminhosRelativos.length; i++) {
-    const caminhoRelativo = `${caminhosRelativos[i]}/${exercicio.idImagem}`;
-    try {
-      const url = await getDownloadURL(storageRef(storage, `Exercicios/${caminhoRelativo}`));
-      return { ...exercicio, urlImagem: url };
-    } catch (error) {
-      console.log(`Tentativa ${i + 1}: Imagem não encontrada para o exercício ${exercicio.nomeExercicio} no caminho ${caminhoRelativo}.`);
-    }
+export const deletarTreino = async (usuarioUID, treinoUID) => {
+  console.log("UIDS " + usuarioUID, treinoUID)
+  try {
+    const treinoRef = ref(database, `treinos/${usuarioUID}/${treinoUID}`);
+    await set(treinoRef, null); // Use set com valor null para remover o nó
+    console.log("Treino excluído com sucesso!");
+  } catch (error) {
+    console.error('Erro ao excluir Treino:', error);
   }
-
-  return { ...exercicio, urlImagem: null };
-};
+}
