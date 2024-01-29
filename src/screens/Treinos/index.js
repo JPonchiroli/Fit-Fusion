@@ -7,17 +7,22 @@ import {
   TouchableOpacity,
   Image,
   ScrollView,
+  Modal,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { recuperaTreinosDoUsuario, enviarTreino } from "../../config/firebaseAuth";
+import {
+  recuperaTreinosDoUsuario,
+  enviarTreino,
+} from "../../config/firebaseAuth";
 import { auth } from "../../config/firebaseConfig";
 import { Feather } from "@expo/vector-icons";
+import Toast from "react-native-toast-message";
 
 export default function Home({ navigation }) {
   const uid = auth.currentUser.uid;
   const [userInfo, setUserInfo] = useState(null);
   const [treinosDoUsuario, setTreinosDoUsuario] = useState([]);
-  const [nomeTreinoContainerVisible, setNomeTreinoContainerVisible] = useState(false);
+  const [modalVisible, setModalVisible] = useState(false);
   const [nomeTreino, setNomeTreino] = useState("");
 
   useEffect(() => {
@@ -31,14 +36,29 @@ export default function Home({ navigation }) {
     });
   }, []);
 
-  function validacaoTreino(){
+  function validacaoTreino() {
     if (nomeTreino === "") {
-      Alert.alert("Erro", "Preencha o nome do treino");
+      Toast.show({
+        type: "error",
+        position: "top",
+        text1: "Preencha o Nome do Treino para Prosseguir",
+        theme: "dark",
+        progress: undefined,
+        visibilityTime: 2000,
+      });
       return;
     }
     enviarTreino(uid, nomeTreino);
     setNomeTreino("");
-    setNomeTreinoContainerVisible(false);
+    setModalVisible(false);
+    Toast.show({
+      type: "success",
+      position: "top",
+      text1: "Treino Adicionado com Sucesso!",
+      theme: "dark",
+      progress: undefined,
+      visibilityTime: 2000,
+    });
   }
 
   return (
@@ -90,9 +110,18 @@ export default function Home({ navigation }) {
           </Text>
           <View style={styles.divider}></View>
 
-          {nomeTreinoContainerVisible && (
+          {modalVisible && <View style={styles.overlay} />}
+
+          <Modal
+            transparent={true}
+            animationType="slide"
+            visible={modalVisible}
+            onRequestClose={() => setModalVisible(false)}
+          >
             <View style={styles.nomeTreinoContainer}>
-              <Text style={styles.nomeTreinoTitle}>Informe o nome do Treino</Text>
+              <Text style={styles.nomeTreinoTitle}>
+                Informe o nome do Treino
+              </Text>
               <TextInput
                 style={styles.nomeTreinoInput}
                 placeholder="Nome do Treino"
@@ -100,14 +129,28 @@ export default function Home({ navigation }) {
                 color={"#fff"}
                 onChangeText={(text) => setNomeTreino(text)}
               />
-              <TouchableOpacity
-                style={styles.nomeTreinoTouchable}
-                onPress={validacaoTreino}
+              <View
+                style={{ display: "flex", flexDirection: "row", margin: 10 }}
               >
-                <Text style={styles.nomeTreinoTitle}>Enviar</Text>
-              </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.nomeTreinoTouchable}
+                  onPress={() => {
+                    validacaoTreino();
+                  }}
+                >
+                  <Text style={styles.nomeTreinoTitle}>Enviar</Text>
+                </TouchableOpacity>
+                <TouchableOpacity
+                  style={styles.nomeTreinoTouchable}
+                  onPress={() => {
+                    setModalVisible(false); // Feche o modal ao cancelar
+                  }}
+                >
+                  <Text style={styles.nomeTreinoTitle}>Cancelar</Text>
+                </TouchableOpacity>
+              </View>
             </View>
-          )}
+          </Modal>
 
           <ScrollView style={styles.scrollViewMenu}>
             {treinosDoUsuario.length > 0 ? (
@@ -129,9 +172,7 @@ export default function Home({ navigation }) {
             )}
           </ScrollView>
           <View style={styles.touchable2}>
-            <TouchableOpacity
-              onPress={() => setNomeTreinoContainerVisible(true)}
-            >
+            <TouchableOpacity onPress={() => setModalVisible(true)}>
               <Feather
                 style={styles.criarTreinoButton}
                 name="plus"
@@ -162,6 +203,9 @@ const styles = StyleSheet.create({
     width: "25%",
     height: "100%",
     marginBottom: 20,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
   },
   titleSection: {
     color: "#fff",
@@ -194,12 +238,12 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
-    top: 57,
+    top: "20%",
+    left: "15%",
     backgroundColor: "#000",
     borderColor: "rgba(255, 57, 83, 1)",
     borderWidth: 2,
     borderRadius: 10,
-    zIndex: 99,
     padding: 30,
   },
   nomeTreinoTitle: {
@@ -218,6 +262,7 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderRadius: 10,
     marginTop: 20,
+    marginRight: 10,
   },
   titleNumber: {
     color: "#fff",
