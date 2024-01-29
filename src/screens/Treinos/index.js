@@ -111,7 +111,7 @@ export default function Home({ navigation }) {
 
           <ScrollView style={styles.scrollViewMenu}>
             {treinosDoUsuario.length > 0 ? (
-              treinosDoUsuario.map((treino) => (
+              treinosDoUsuario.map((treino, index) => (
                 //console.log(treino.nomeTreino),
                 <TouchableOpacity
                   style={styles.touchable}
@@ -120,7 +120,7 @@ export default function Home({ navigation }) {
                     navigation.navigate("TreinoSelecionado", { treino })
                   }
                 >
-                  <Text style={styles.titleNumber}>1</Text>
+                  <Text style={styles.titleNumber}>{index + 1}</Text>
                   <Text style={styles.title}>{treino.nomeTreino}</Text>
                 </TouchableOpacity>
               ))
@@ -227,7 +227,6 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 250,
     fontWeight: "bold",
-    width: "18%",
     textAlign: "center",
     justifyContent: "center",
   },

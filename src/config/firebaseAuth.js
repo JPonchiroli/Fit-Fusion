@@ -5,6 +5,8 @@ import {
   createUserWithEmailAndPassword,
 } from "firebase/auth";
 import { app } from "./firebaseConfig";
+import { getDownloadURL, ref as storageRef } from 'firebase/storage';
+import { storage } from '../config/firebaseConfig';
 
 const Auth = getAuth(app);
 const database = getDatabase(app);
@@ -108,4 +110,28 @@ export const enviarTreino = async (uid, nomeTreino) => {
   } catch (error) {
     console.error("Erro ao adicionar treino:", error);
   }
+};
+
+export const carregarImagemExercicio = async (exercicio) => {
+  const caminhosRelativos = [
+    'Abdominal',
+    'Biceps',
+    'Costas',
+    'Ombro',
+    'Peito',
+    'Perna',
+    'Triceps',
+  ];
+
+  for (let i = 0; i < caminhosRelativos.length; i++) {
+    const caminhoRelativo = `${caminhosRelativos[i]}/${exercicio.idImagem}`;
+    try {
+      const url = await getDownloadURL(storageRef(storage, `Exercicios/${caminhoRelativo}`));
+      return { ...exercicio, urlImagem: url };
+    } catch (error) {
+      console.log(`Tentativa ${i + 1}: Imagem não encontrada para o exercício ${exercicio.nomeExercicio} no caminho ${caminhoRelativo}.`);
+    }
+  }
+
+  return { ...exercicio, urlImagem: null };
 };

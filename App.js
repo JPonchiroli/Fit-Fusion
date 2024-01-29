@@ -1,24 +1,24 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
-import Toast from 'react-native-toast-message';
+import Toast from "react-native-toast-message";
 
 import Login from "./src/screens/Login";
 import CreateAccount from "./src/screens/CreateAccount";
 import TabScreen from "./src/screens/TabScreen";
-/*
-import CriarTreino from "./src/screens/Treinos/CriarTreino";
-import Peitoral from './src/screens/Treinos/CriarTreino/Peitoral';
-import Ombro from './src/screens/Treinos/CriarTreino/Ombro';
-import Costas from './src/screens/Treinos/CriarTreino/Costas';
-import Biceps from './src/screens/Treinos/CriarTreino/Biceps';
-import Triceps from './src/screens/Treinos/CriarTreino/Triceps';
-import Inferiores from './src/screens/Treinos/CriarTreino/Inferiores';
-import Abdominal from './src/screens/Treinos/CriarTreino/Abdominal';
-import DetalheExercicio from './src/screens/Treinos/CriarTreino/DetalheExercicio';
-import TreinoSelecionado from './src/screens/Treinos/TreinoSelecionado';
-import ExercicioSelecionado from "./src/screens/Treinos/ExercicioSelecionado";
-*/
+
+//import CriarTreino from "./src/screens/Treinos/CriarTreino";
+//import Peitoral from './src/screens/Treinos/CriarTreino/Peitoral';
+//import Ombro from './src/screens/Treinos/CriarTreino/Ombro';
+//import Costas from './src/screens/Treinos/CriarTreino/Costas';
+//import Biceps from './src/screens/Treinos/CriarTreino/Biceps';
+//import Triceps from './src/screens/Treinos/CriarTreino/Triceps';
+//import Inferiores from './src/screens/Treinos/CriarTreino/Inferiores';
+//import Abdominal from './src/screens/Treinos/CriarTreino/Abdominal';
+//import DetalheExercicio from './src/screens/Treinos/CriarTreino/DetalheExercicio';
+import TreinoSelecionado from "./src/screens/Treinos/TreinoSelecionado";
+//import ExercicioSelecionado from "./src/screens/Treinos/ExercicioSelecionado";
+
 const Stack = createStackNavigator();
 //const Tab = createBottomTabNavigator();
 
@@ -41,7 +41,12 @@ const App = () => {
           component={CreateAccount}
           options={{ headerShown: false }}
         />
-       {/*  <Stack.Screen
+        <Stack.Screen
+          name="TreinoSelecionado"
+          component={TreinoSelecionado}
+          options={{ headerShown: false }}
+        />
+        {/*  <Stack.Screen
           name="CriarTreino"
           component={CriarTreino}
           options={{ headerShown: false }}
@@ -84,11 +89,6 @@ const App = () => {
         <Stack.Screen
           name="DetalheExercicio"
           component={DetalheExercicio}
-          options={{ headerShown: false }}
-        />
-        <Stack.Screen
-          name="TreinoSelecionado"
-          component={TreinoSelecionado}
           options={{ headerShown: false }}
         />
         <Stack.Screen
