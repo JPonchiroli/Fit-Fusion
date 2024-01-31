@@ -101,12 +101,12 @@ const TreinoSelecionado = ({ route }) => {
             visibilityTime: 2000,
         });
     };
-/*
+
     const handleAdicionarExercicio = () => {
         // Adicione o código para abrir a tela CriarTreino aqui
         navigation.navigate('CriarTreino');
     };
-*/
+
   return (
     <View style={styles.container}>
       <View style={styles.top1}>
@@ -168,7 +168,7 @@ const TreinoSelecionado = ({ route }) => {
 
       <TouchableOpacity
         style={styles.adicionarExercicioButton}
-        //onPress={handleAdicionarExercicio}
+        onPress={handleAdicionarExercicio}
       >
         <Text style={styles.adicionarExercicioButtonText}>
           Adicionar Exercício

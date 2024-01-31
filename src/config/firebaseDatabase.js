@@ -77,3 +77,25 @@ export const deletarTreino = async (usuarioUID, treinoUID) => {
     console.error('Erro ao excluir Treino:', error);
   }
 }
+
+export const recuperaExerciciosDoUsuario = async (setExerciciosDoUsuario) => {
+  try {
+    const snapshot = await ref(database, `exercicios/Peito/`);
+    onValue(snapshot, (data) => {
+      if (data.exists()) {
+        const treinosUsuarioData = data.val();
+        const treinosUsuarioArray = Object.keys(treinosUsuarioData).map(
+          (treinoUid) => ({
+            treinoUid,
+            ...treinosUsuarioData[treinoUid],
+          })
+        );
+        setExerciciosDoUsuario(treinosUsuarioArray);
+      } else {
+        console.log("Nenhum treino encontrado para o usuário.");
+      }
+    });
+  } catch (error) {
+    console.error("Erro ao recuperar treinos do usuário:", error);
+  }
+};

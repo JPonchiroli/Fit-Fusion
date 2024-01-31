@@ -8,6 +8,7 @@ import { Feather } from "@expo/vector-icons";
 export default function Home({ navigation }) {
   const [userInfo, setUserInfo] = useState(null);
   const [treinosDoUsuario, setTreinosDoUsuario] = useState([]);
+  const [exerciciosDoUsuario, setExerciciosDoUsuario] = useState([]);
   const trainingImages = [
     require('./../../img/Imagens-fig/0.png'),
     require('./../../img/Imagens-fig/1.png'),

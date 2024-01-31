@@ -6,9 +6,9 @@ import Toast from "react-native-toast-message";
 import Login from "./src/screens/Login";
 import CreateAccount from "./src/screens/CreateAccount";
 import TabScreen from "./src/screens/TabScreen";
+import CriarTreino from "./src/screens/Treinos/CriarTreino";
+import Peito from './src/screens/Treinos/CriarTreino/Peito';
 
-//import CriarTreino from "./src/screens/Treinos/CriarTreino";
-//import Peitoral from './src/screens/Treinos/CriarTreino/Peitoral';
 //import Ombro from './src/screens/Treinos/CriarTreino/Ombro';
 //import Costas from './src/screens/Treinos/CriarTreino/Costas';
 //import Biceps from './src/screens/Treinos/CriarTreino/Biceps';
@@ -51,16 +51,18 @@ const App = () => {
           component={ExercicioSelecionado}
           options={{ headerShown: false }}
         />
-        {/*  <Stack.Screen
+          <Stack.Screen
           name="CriarTreino"
           component={CriarTreino}
           options={{ headerShown: false }}
         />
+        {
         <Stack.Screen
-          name="Peitoral"
-          component={Peitoral}
+          name="Peito"
+          component={Peito}
           options={{ headerShown: false }}
         />
+        /*
         <Stack.Screen
           name="Ombro"
           component={Ombro}

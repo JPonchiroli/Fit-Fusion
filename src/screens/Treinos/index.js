@@ -12,6 +12,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import {
   recuperaTreinosDoUsuario,
+  recuperaExerciciosDoUsuario,
   enviarTreino,
 } from "../../config/firebaseDatabase";
 import { auth } from "../../config/firebaseConfig";
@@ -155,7 +156,7 @@ export default function Home({ navigation }) {
           <ScrollView style={styles.scrollViewMenu}>
             {treinosDoUsuario.length > 0 ? (
               treinosDoUsuario.map((treino, index) => (
-                //console.log(treino.nomeTreino),
+                console.log(treino.nome),
                 <TouchableOpacity
                   style={styles.touchable}
                   key={treino.uid}
