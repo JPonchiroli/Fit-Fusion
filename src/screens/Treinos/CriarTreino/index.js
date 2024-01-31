@@ -17,7 +17,7 @@ console.disableYellowBox = true;
 
 export default function CriarTreino() {
   const navigation = useNavigation();
-
+  
   return (
     <View style={styles.container}>
       <View style={styles.top1}>
@@ -109,7 +109,7 @@ export default function CriarTreino() {
               <Text style={styles.titulo}>Inferiores</Text>
             </ImageBackground>
           </TouchableOpacity>
-{/*
+
           <TouchableOpacity
             style={styles.treinos}
             onPress={() => navigation.navigate("Abdominal")}
@@ -122,7 +122,6 @@ export default function CriarTreino() {
               <Text style={styles.titulo}>Abdominal</Text>
             </ImageBackground>
           </TouchableOpacity>
-  */}
         </View>
       </View>
     </View>
