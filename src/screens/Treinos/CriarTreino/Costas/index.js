@@ -18,7 +18,7 @@ export default function Ombro() {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        const grupoMuscular = "Ombro";
+        const grupoMuscular = "Costas";
         recuperaExerciciosDoUsuario(grupoMuscular, setExercicios);
       }
     });

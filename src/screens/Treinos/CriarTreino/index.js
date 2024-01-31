@@ -56,8 +56,7 @@ export default function CriarTreino() {
             >
               <Text style={styles.titulo}>Ombro</Text>
             </ImageBackground>
-          </TouchableOpacity>
-        {/*
+          </TouchableOpacity>  
           <TouchableOpacity
             style={styles.treinos}
             onPress={() => navigation.navigate("Costas")}
@@ -70,7 +69,7 @@ export default function CriarTreino() {
               <Text style={styles.titulo}>Costas</Text>
             </ImageBackground>
           </TouchableOpacity>
-
+{/*
           <TouchableOpacity
             style={styles.treinos}
             onPress={() => navigation.navigate("Biceps")}

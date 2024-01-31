@@ -9,8 +9,8 @@ import TabScreen from "./src/screens/TabScreen";
 import CriarTreino from "./src/screens/Treinos/CriarTreino";
 import Peito from './src/screens/Treinos/CriarTreino/Peito';
 import Ombro from './src/screens/Treinos/CriarTreino/Ombro';
+import Costas from './src/screens/Treinos/CriarTreino/Costas';
 
-//import Costas from './src/screens/Treinos/CriarTreino/Costas';
 //import Biceps from './src/screens/Treinos/CriarTreino/Biceps';
 //import Triceps from './src/screens/Treinos/CriarTreino/Triceps';
 //import Inferiores from './src/screens/Treinos/CriarTreino/Inferiores';
@@ -65,13 +65,13 @@ const App = () => {
           name="Ombro"
           component={Ombro}
           options={{ headerShown: false }}
-        />
-        {/*
+        />      
         <Stack.Screen
           name="Costas"
           component={Costas}
           options={{ headerShown: false }}
         />
+        {/*
         <Stack.Screen
           name="Biceps"
           component={Biceps}
