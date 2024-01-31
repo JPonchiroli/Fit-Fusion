@@ -10,8 +10,8 @@ import CriarTreino from "./src/screens/Treinos/CriarTreino";
 import Peito from './src/screens/Treinos/CriarTreino/Peito';
 import Ombro from './src/screens/Treinos/CriarTreino/Ombro';
 import Costas from './src/screens/Treinos/CriarTreino/Costas';
+import Biceps from './src/screens/Treinos/CriarTreino/Biceps';
 
-//import Biceps from './src/screens/Treinos/CriarTreino/Biceps';
 //import Triceps from './src/screens/Treinos/CriarTreino/Triceps';
 //import Inferiores from './src/screens/Treinos/CriarTreino/Inferiores';
 //import Abdominal from './src/screens/Treinos/CriarTreino/Abdominal';
@@ -71,12 +71,12 @@ const App = () => {
           component={Costas}
           options={{ headerShown: false }}
         />
-        {/*
         <Stack.Screen
           name="Biceps"
           component={Biceps}
           options={{ headerShown: false }}
         />
+        {/*
         <Stack.Screen
           name="Triceps"
           component={Triceps}
