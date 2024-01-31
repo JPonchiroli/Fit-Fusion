@@ -10,15 +10,20 @@ import {
 import { auth } from "../../../../config/firebaseConfig";
 import { recuperaExerciciosDoUsuario } from "../../../../config/firebaseDatabase";
 import { Feather } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 
-export default function Ombro() {
+export default function GrupoMuscular() {
+  const route = useRoute();
   const [exercicios, setExercicios] = useState([]);
   const navigation = useNavigation();
+
+  const { grupoMuscular } = route.params;
+
   useEffect(() => {
+
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        const grupoMuscular = "Triceps";
+        //const grupoMuscular = "Peito"
         recuperaExerciciosDoUsuario(grupoMuscular, setExercicios);
       }
     });

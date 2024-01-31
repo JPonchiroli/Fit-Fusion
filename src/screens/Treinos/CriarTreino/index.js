@@ -10,14 +10,15 @@ import {
   Alert,
 } from "react-native";
 import React from "react";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 
 console.disableYellowBox = true;
 
 export default function CriarTreino() {
   const navigation = useNavigation();
-  
+  const musculoEscolhido = ["Peito", "Ombro", "Costas", "Biceps", "Triceps", "Perna", "Abdominal"]
+
   return (
     <View style={styles.container}>
       <View style={styles.top1}>
@@ -35,7 +36,7 @@ export default function CriarTreino() {
         <View style={styles.mainTreino}>
           <TouchableOpacity
             style={styles.treinos}
-            onPress={() => navigation.navigate("Peito")}
+            onPress={() => navigation.navigate("GrupoMuscular", {grupoMuscular: musculoEscolhido[0]})}
           >
             <ImageBackground
               source={require("../../../img/peito.jpg")}
@@ -47,7 +48,7 @@ export default function CriarTreino() {
           
           <TouchableOpacity
             style={styles.treinos}
-            onPress={() => navigation.navigate("Ombro")}
+            onPress={() => navigation.navigate("GrupoMuscular", {grupoMuscular: musculoEscolhido[1]})}
           >
             <ImageBackground
               source={require("../../../img/ombro.jpg")}
@@ -60,7 +61,7 @@ export default function CriarTreino() {
 
           <TouchableOpacity
             style={styles.treinos}
-            onPress={() => navigation.navigate("Costas")}
+            onPress={() => navigation.navigate("GrupoMuscular", {grupoMuscular: musculoEscolhido[2]})}
           >
             <ImageBackground
               source={require("../../../img/costas.jpg")}
@@ -73,7 +74,7 @@ export default function CriarTreino() {
 
           <TouchableOpacity
             style={styles.treinos}
-            onPress={() => navigation.navigate("Biceps")}
+            onPress={() => navigation.navigate("GrupoMuscular", {grupoMuscular: musculoEscolhido[3]})}
           >
             <ImageBackground
               source={require("../../../img/biceps.jpg")}
@@ -86,7 +87,7 @@ export default function CriarTreino() {
 
           <TouchableOpacity
             style={styles.treinos}
-            onPress={() => navigation.navigate("Triceps")}
+            onPress={() => navigation.navigate("GrupoMuscular", {grupoMuscular: musculoEscolhido[4]})}
           >
             <ImageBackground
               source={require("../../../img/triceps.jpg")}
@@ -99,7 +100,7 @@ export default function CriarTreino() {
 
           <TouchableOpacity
             style={styles.treinos}
-            onPress={() => navigation.navigate("Inferiores")}
+            onPress={() => navigation.navigate("GrupoMuscular", {grupoMuscular: musculoEscolhido[5]})}
           >
             <ImageBackground
               source={require("../../../img/perna.jpg")}
@@ -112,7 +113,7 @@ export default function CriarTreino() {
 
           <TouchableOpacity
             style={styles.treinos}
-            onPress={() => navigation.navigate("Abdominal")}
+            onPress={() => navigation.navigate("GrupoMuscular", {grupoMuscular: musculoEscolhido[6]})}
           >
             <ImageBackground
               source={require("../../../img/abdominal.jpg")}
