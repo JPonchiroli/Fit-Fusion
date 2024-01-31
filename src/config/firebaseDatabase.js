@@ -78,9 +78,9 @@ export const deletarTreino = async (usuarioUID, treinoUID) => {
   }
 }
 
-export const recuperaExerciciosDoUsuario = async (setExerciciosDoUsuario) => {
+export const recuperaExerciciosDoUsuario = async (grupoMuscular, setExerciciosDoUsuario) => {
   try {
-    const snapshot = await ref(database, `exercicios/Peito/`);
+    const snapshot = await ref(database, `exercicios/${grupoMuscular}/`);
     onValue(snapshot, (data) => {
       if (data.exists()) {
         const treinosUsuarioData = data.val();

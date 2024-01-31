@@ -12,13 +12,13 @@ import { recuperaExerciciosDoUsuario } from "../../../../config/firebaseDatabase
 import { Feather } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 
-export default function Peito() {
+export default function Ombro() {
   const [exercicios, setExercicios] = useState([]);
   const navigation = useNavigation();
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        const grupoMuscular = "Peito"
+        const grupoMuscular = "Ombro"
         recuperaExerciciosDoUsuario(grupoMuscular, setExercicios);
       }
     });
