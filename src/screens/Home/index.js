@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, TouchableOpacity, Image, ScrollView, ImageBackground } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
-import { recuperaTreinosDoUsuario, recuperaInfoUsuario } from "../../config/firebaseAuth";
+import { recuperaTreinosDoUsuario, recuperaInfoUsuario } from "../../config/firebaseDatabase";
 import { auth } from "../../config/firebaseConfig";
 import { Feather } from "@expo/vector-icons";
 

@@ -12,7 +12,7 @@ import {
   ScrollView,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
-import { registerUser } from "../../config/firebaseConfig";
+import { registerUser } from "../../config/firebaseAuth";
 import { useNavigation } from "@react-navigation/native";
 
 console.disableYellowBox = true;

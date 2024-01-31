@@ -9,9 +9,8 @@ import {
   Image
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { recuperaInfoUsuario } from "../../config/firebaseAuth";
+import { recuperaInfoUsuario } from "../../config/firebaseDatabase";
 import { auth } from "../../config/firebaseConfig";
-import { auth as firebaseAuth1 } from "../../config/firebaseConfig";
 
 export default function Configuracoes() {
   const navigation = useNavigation();
@@ -38,7 +37,7 @@ export default function Configuracoes() {
   }, [navigation]);
 
   useEffect(() => {
-    const unsubscribe = firebaseAuth1.onAuthStateChanged(async (user) => {
+    const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
         setUserInfo(user);
 

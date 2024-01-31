@@ -13,7 +13,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import {
   recuperaTreinosDoUsuario,
   enviarTreino,
-} from "../../config/firebaseAuth";
+} from "../../config/firebaseDatabase";
 import { auth } from "../../config/firebaseConfig";
 import { Feather } from "@expo/vector-icons";
 import Toast from "react-native-toast-message";

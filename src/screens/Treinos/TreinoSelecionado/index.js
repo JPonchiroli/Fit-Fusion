@@ -11,7 +11,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { auth, storage } from "../../../config/firebaseConfig";
 import { getDownloadURL, ref } from "firebase/storage";
-import { deletarTreino } from "../../../config/firebaseAuth";
+import { deletarTreino } from "../../../config/firebaseDatabase";
 import Toast from "react-native-toast-message";
 
 const TreinoSelecionado = ({ route }) => {
