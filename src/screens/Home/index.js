@@ -48,10 +48,12 @@ export default function Home({ navigation }) {
 
 
   return (
-    <View style={styles.container}>
+    <ScrollView style={styles.container}>
+      
       <LinearGradient
         style={{
           width: '100%',
+          flex: 1,
           height: '100%',
         }}
         start={{ x: 0, y: 1 }}
@@ -122,9 +124,9 @@ export default function Home({ navigation }) {
           <View style={styles.AcountContainer}>
 
             <Feather
-              style={{ marginTop: 10 }}
+              style={styles.profileImage}
               name="user"
-              size={80}
+              size={60}
               color={"rgba(255, 57, 83, 1)"}
 
             />
@@ -140,7 +142,8 @@ export default function Home({ navigation }) {
           </View>
         </View>
       </LinearGradient>
-    </View>
+
+    </ScrollView>
   );
 }
 
@@ -155,16 +158,11 @@ const styles = StyleSheet.create({
   AcountContainer: {
     display: "flex",
     flexDirection: "row",
-    alignItems: 'center'
-
+    alignItems: 'center',
+    width: '100%'
   },
   profileImage: {
-    width: 100,
-    height: 100,
-    borderRadius: 50,
-    marginVertical: 10,
-    borderWidth: 4,
-    borderColor: 'rgba(255, 57, 83, 1)',
+    marginTop: 10,
   },
   AcountTextContainer: {
     display: "flex",
@@ -199,6 +197,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
   },
   linearGradientOverlay: {
+    flexGrow: 1,
     position: 'absolute',
     bottom: 0, // Ajuste conforme necessário
     left: 0,   // Ajuste conforme necessário

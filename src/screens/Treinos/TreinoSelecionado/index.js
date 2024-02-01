@@ -173,6 +173,7 @@ const TreinoSelecionado = ({ route }) => {
         <Text style={styles.adicionarExercicioButtonText}>
           Adicionar Exercício
         </Text>
+        
       </TouchableOpacity>
 
       <TouchableOpacity
@@ -257,7 +258,11 @@ const styles = StyleSheet.create({
   },
   adicionarExercicioButtonText: {
     color: "#000",
+    display: 'flex',
     fontSize: 16,
+    alignItems: 'center',
+    justifyContent: 'center',
+    alignContent: 'center'
   },
   touchableExercise: {
     // Adicione os estilos desejados para o TouchableOpacity dos exercícios
