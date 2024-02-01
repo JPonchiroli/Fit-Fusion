@@ -7,14 +7,16 @@ import {
   Image,
   TouchableOpacity,
 } from "react-native";
-import { auth } from "../../../../config/firebaseConfig";
+import { auth, storage } from "../../../../config/firebaseConfig";
 import { recuperaExerciciosDoUsuario } from "../../../../config/firebaseDatabase";
+import { getDownloadURL, ref } from "firebase/storage";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
 export default function GrupoMuscular() {
   const route = useRoute();
   const [exercicios, setExercicios] = useState([]);
+  const [imagensExercicios, setImagensExercicios] = useState([]);
   const navigation = useNavigation();
 
   const { grupoMuscular } = route.params;
@@ -25,50 +27,31 @@ export default function GrupoMuscular() {
         recuperaExerciciosDoUsuario(grupoMuscular, setExercicios);
       }
     });
-    /*
-    const fetchExercicios = async () => {
-      try {
-        const databaseRef = firebase.database().ref("exercicios/Peito");
-        const snapshot = await databaseRef.once("value");
 
-        if (snapshot.exists()) {
-          const exercicios = snapshot.val();
-          const exerciciosArray = await Promise.all(
-            Object.keys(exercicios).map(async (key) => {
-              const exercicio = exercicios[key];
-              try {
-                const imagemRef = firebase
-                  .storage()
-                  .ref(`Exercicios/Peito/${exercicio.idImagem}`);
-                const url = await imagemRef.getDownloadURL();
-                return {
-                  id: key,
-                  ...exercicio,
-                  imagemUrl: url,
-                };
-              } catch (error) {
-                console.error("Erro ao obter URL da imagem:", error);
-                return {
-                  id: key,
-                  ...exercicio,
-                  imagemUrl: null,
-                  error: "Erro ao obter URL da imagem",
-                };
-              }
-            })
-          );
-
-          setExerciciosPeito(exerciciosArray);
-        }
-      } catch (error) {
-        console.error("Erro ao recuperar dados do Realtime Database:", error);
-      }
+    const carregarImagensExercicios = async () => {
+      const imagens = await Promise.all(
+        exercicios.map(async (exercicio) => {
+          try {
+            const caminhoRelativo = `${grupoMuscular}/${exercicio.idImagem}`;
+            const url = await getDownloadURL(
+              ref(storage, `Exercicios/${caminhoRelativo}`)
+            );
+            return { ...exercicio, urlImagem: url };
+          } catch (error) {
+            console.log(
+              `Imagem não encontrada para o exercício ${exercicio.nome
+              } no caminho ${caminhoRelativo}.`
+            );
+            return { ...exercicio, urlImagem: null };
+          }
+        })
+      );
+      setImagensExercicios(imagens);
     };
 
-    fetchExercicios();
-    */
+    carregarImagensExercicios();
     return () => unsubscribe();
-  }, []);
+  }, [grupoMuscular, exercicios]);
 
   return (
     <View style={styles.container}>
@@ -84,29 +67,19 @@ export default function GrupoMuscular() {
       </View>
       <FlatList
         style={styles.flat}
-        data={exercicios}
+        data={imagensExercicios}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
-          <TouchableOpacity
-          /*onPress={() => {
-              // Navegar para a próxima tela passando dados do exercício
-              navigation.navigate("DetalheExercicio", {
-                exercicio: item,
-              });
-              
-            }}
-            */
-          >
+          <TouchableOpacity>
             <View style={styles.treino}>
-              {/*{item.imagemUrl ? (
+              {item.urlImagem ? (
                 <Image
-                  source={{ uri: item.imagemUrl }}
+                  source={{ uri: item.urlImagem }}
                   style={styles.ImageTreino}
                 />
               ) : (
-                <Text>Erro ao carregar imagem</Text>
+                <Text>Imagem não disponível</Text>
               )}
-              */}
               <Text style={styles.textTreino}>{item.nome}</Text>
             </View>
           </TouchableOpacity>
