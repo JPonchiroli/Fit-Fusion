@@ -20,10 +20,8 @@ export default function GrupoMuscular() {
   const { grupoMuscular } = route.params;
 
   useEffect(() => {
-
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        //const grupoMuscular = "Peito"
         recuperaExerciciosDoUsuario(grupoMuscular, setExercicios);
       }
     });
@@ -69,6 +67,7 @@ export default function GrupoMuscular() {
 
     fetchExercicios();
     */
+    return () => unsubscribe();
   }, []);
 
   return (
@@ -83,7 +82,6 @@ export default function GrupoMuscular() {
           />
         </View>
       </View>
-
       <FlatList
         style={styles.flat}
         data={exercicios}

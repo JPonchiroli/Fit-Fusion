@@ -68,7 +68,6 @@ export const enviarTreino = async (uid, nomeTreino) => {
 };
 
 export const deletarTreino = async (usuarioUID, treinoUID) => {
-  console.log("UIDS " + usuarioUID, treinoUID)
   try {
     const treinoRef = ref(database, `treinos/${usuarioUID}/${treinoUID}`);
     await set(treinoRef, null); // Use set com valor null para remover o nó
