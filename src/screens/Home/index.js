@@ -82,38 +82,36 @@ export default function Home({ navigation }) {
           <Text style={styles.subTitleSection}>Aqui está listado todos os seus treinos</Text>
           <View style={styles.divider}></View>
           <ScrollView
-            horizontal={true} // Enable horizontal scrolling
-            style={styles.scrollViewMenu}
+  horizontal={true} // Enable horizontal scrolling
+  style={styles.scrollViewMenu}
+>
+  {treinosDoUsuario
+    .map((treino, index) => treinosDoUsuario[treinosDoUsuario.length - 1 - index]) // Mapeia de trás para frente
+    .map((treino, index) => (
+      <TouchableOpacity
+        style={styles.touchableItem}
+        key={treino.uid}
+        onPress={() => navigation.navigate('TreinoSelecionado', { treino })}
+      >
+        <ImageBackground
+          source={getRandomImage()}
+          style={styles.backgroundImage}
+          imageStyle={styles.imageStyle}
+        >
+          <LinearGradient
+            style={styles.linearGradientOverlay}
+            colors={['rgba(9, 9, 9, 9)', 'transparent']} // Inverta as cores aqui
+            start={{ x: 0, y: 1 }}
+            end={{ x: 1, y: 0 }}
           >
-            {treinosDoUsuario.map((treino, index) => (
+            <Text style={styles.titleCardSubtitle}>A seguir:</Text>
+            <Text style={styles.titleCard}>{treino.nomeTreino}</Text>
+          </LinearGradient>
+        </ImageBackground>
+      </TouchableOpacity>
+    ))}
+</ScrollView>
 
-              <TouchableOpacity
-                style={styles.touchableItem}
-                key={treino.uid}
-                onPress={() => navigation.navigate('TreinoSelecionado', { treino })}
-              >
-                
-                <ImageBackground
-       source={getRandomImage()}
-      style={styles.backgroundImage}
-      imageStyle={styles.imageStyle}
-    >
-                  <LinearGradient
-                    style={styles.linearGradientOverlay}
-                    colors={['rgba(9, 9, 9, 9)', 'transparent']} // Inverta as cores aqui
-                    start={{ x: 0, y: 1 }}
-                    end={{ x: 1, y: 0 }}
-                  >
-                    <Text style={styles.titleCardSubtitle}>A seguir:</Text>
-                    <Text style={styles.titleCard}>{treino.nomeTreino}</Text>
-                  </LinearGradient>
-
-                </ImageBackground>
-
-
-              </TouchableOpacity>
-            ))}
-          </ScrollView>
         </View>
 
 
