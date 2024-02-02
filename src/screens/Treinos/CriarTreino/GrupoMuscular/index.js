@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  Image,
-  TouchableOpacity,
-} from "react-native";
+import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
 import { auth, storage } from "../../../../config/firebaseConfig";
 import { recuperaExerciciosDoUsuario } from "../../../../config/firebaseDatabase";
 import { getDownloadURL, ref } from "firebase/storage";
@@ -28,62 +21,40 @@ export default function GrupoMuscular() {
       }
     });
 
-    const carregarImagensExercicios = async () => {
-      const imagens = await Promise.all(
-        exercicios.map(async (exercicio) => {
-          try {
-            const caminhoRelativo = `${grupoMuscular}/${exercicio.idImagem}`;
-            const url = await getDownloadURL(
-              ref(storage, `Exercicios/${caminhoRelativo}`)
-            );
-            return { ...exercicio, urlImagem: url };
-          } catch (error) {
-            console.log(
-              `Imagem não encontrada para o exercício ${exercicio.nome
-              } no caminho ${caminhoRelativo}.`
-            );
-            return { ...exercicio, urlImagem: null };
-          }
-        })
-      );
-      setImagensExercicios(imagens);
-    };
-
-    carregarImagensExercicios();
     return () => unsubscribe();
   }, [grupoMuscular, exercicios]);
 
-  return (
-    <View style={styles.container}>
-      <View style={styles.top1}>
-        <View>
-          <Feather
-            name="arrow-left-circle"
-            size={30}
-            color={"#fff"}
-            onPress={() => navigation.navigate("CriarTreino")}
-          />
+  const renderExerciseItem = ({ item }) => (
+    <TouchableOpacity onPress={() => handleExerciseClick(item)}>
+      <View style={styles.exerciseContainer}>
+        <Image
+          source={{ uri: item.urlImagem }}
+          style={styles.exerciseImage}
+        />
+        <View style={styles.exerciseDetails}>
+          <Text style={styles.exerciseName}>{item.nome}</Text>
+          <Feather name="chevron-right" size={20} color="#fff" />
         </View>
       </View>
+    </TouchableOpacity>
+  );
+
+  return (
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Feather
+          name="arrow-left-circle"
+          size={30}
+          color={"#fff"}
+          onPress={() => navigation.navigate("CriarTreino")}
+        />
+        
+      </View>
       <FlatList
-        style={styles.flat}
-        data={imagensExercicios}
+        style={styles.flatList}
+        data={exercicios}
         keyExtractor={(item) => item.id}
-        renderItem={({ item }) => (
-          <TouchableOpacity>
-            <View style={styles.treino}>
-              {item.urlImagem ? (
-                <Image
-                  source={{ uri: item.urlImagem }}
-                  style={styles.ImageTreino}
-                />
-              ) : (
-                <Text>Imagem não disponível</Text>
-              )}
-              <Text style={styles.textTreino}>{item.nome}</Text>
-            </View>
-          </TouchableOpacity>
-        )}
+        renderItem={renderExerciseItem}
       />
     </View>
   );
@@ -92,44 +63,52 @@ export default function GrupoMuscular() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
-    justifyContent: "center",
     backgroundColor: "#000",
-    width: "100%",
     marginTop: "8%",
   },
 
-  flat: {
-    width: "100%",
-  },
-
-  treino: {
-    display: "flex",
+  header: {
     flexDirection: "row",
     alignItems: "center",
-    background: "transparent",
-
-    marginBottom: 10,
-    padding: 10,
-    borderBottomWidth: 1,
-    borderColor: "#fff",
-    width: "100%",
-  },
-
-  textTreino: {
-    color: "#fff",
-    marginLeft: 10,
-  },
-
-  ImageTreino: {
-    width: 100,
-    height: 100,
-  },
-
-  top1: {
-    width: "100%",
+    justifyContent: "space-between",
     padding: 10,
     borderBottomWidth: 1,
     borderBottomColor: "#fff",
+  },
+
+  title: {
+    color: "#fff",
+    fontSize: 18,
+    fontWeight: "bold",
+  },
+
+  flatList: {
+    width: "100%",
+  },
+
+  exerciseContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    padding: 10,
+    borderBottomWidth: 1,
+    borderColor: "#fff",
+  },
+
+  exerciseImage: {
+    width: 100,
+    height: 100,
+    marginRight: 10,
+  },
+
+  exerciseDetails: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+  },
+
+  exerciseName: {
+    color: "#fff",
+    fontSize: 16,
   },
 });

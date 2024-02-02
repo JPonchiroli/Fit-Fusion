@@ -8,9 +8,7 @@ import CreateAccount from "./src/screens/CreateAccount";
 import TabScreen from "./src/screens/TabScreen";
 import CriarTreino from "./src/screens/Treinos/CriarTreino";
 import GrupoMuscular from './src/screens/Treinos/CriarTreino/GrupoMuscular';
-
-//import DetalheExercicio from './src/screens/Treinos/CriarTreino/DetalheExercicio';
-
+import DetalheExercicio from './src/screens/Treinos/CriarTreino/GrupoMuscular/DetalheExercicio';
 import TreinoSelecionado from "./src/screens/Treinos/TreinoSelecionado";
 import ExercicioSelecionado from "./src/screens/Treinos/TreinoSelecionado/ExercicioSelecionado";
 
@@ -56,12 +54,11 @@ const App = () => {
           component={GrupoMuscular}
           options={{ headerShown: false }}
         />
-         {/*
         <Stack.Screen
           name="DetalheExercicio"
           component={DetalheExercicio}
           options={{ headerShown: false }}
-        />*/}
+        />
       </Stack.Navigator>
       <Toast ref={(ref) => Toast.setRef(ref)} />
     </NavigationContainer>
