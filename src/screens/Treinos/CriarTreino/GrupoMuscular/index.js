@@ -9,7 +9,6 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 export default function GrupoMuscular() {
   const route = useRoute();
   const [exercicios, setExercicios] = useState([]);
-  const [imagensExercicios, setImagensExercicios] = useState([]);
   const navigation = useNavigation();
 
   const { grupoMuscular } = route.params;
@@ -20,17 +19,12 @@ export default function GrupoMuscular() {
         recuperaExerciciosDoUsuario(grupoMuscular, setExercicios);
       }
     });
-
     return () => unsubscribe();
   }, [grupoMuscular, exercicios]);
 
   const renderExerciseItem = ({ item }) => (
     <TouchableOpacity onPress={() => handleExerciseClick(item)}>
       <View style={styles.exerciseContainer}>
-        <Image
-          source={{ uri: item.urlImagem }}
-          style={styles.exerciseImage}
-        />
         <View style={styles.exerciseDetails}>
           <Text style={styles.exerciseName}>{item.nome}</Text>
           <Feather name="chevron-right" size={20} color="#fff" />
