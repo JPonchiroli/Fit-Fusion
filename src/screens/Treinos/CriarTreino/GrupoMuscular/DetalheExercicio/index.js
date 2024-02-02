@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
         flex: 1,
         backgroundColor: "#000",
         alignItems: "center",
-
+        marginTop: 30
     },
     topBar: {
         width: "100%",

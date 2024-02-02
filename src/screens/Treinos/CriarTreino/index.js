@@ -1,189 +1,128 @@
+import React from "react";
 import {
   View,
   Text,
   StyleSheet,
   Image,
   TouchableOpacity,
-  TextInput,
-  Button,
-  ImageBackground,
-  Alert,
+  ScrollView,
 } from "react-native";
-import React from "react";
 import { useNavigation } from "@react-navigation/native";
+import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from "@expo/vector-icons";
 
-console.disableYellowBox = true;
-
-export default function CriarTreino() {
+const CriarTreino = () => {
   const navigation = useNavigation();
-  const musculoEscolhido = ["Peito", "Ombro", "Costas", "Biceps", "Triceps", "Perna", "Abdominal"]
+  const musculoEscolhido = [
+    { nome: "Peito", imagem: require("../../../img/peito.jpg") },
+    { nome: "Ombro", imagem: require("../../../img/ombro.jpg") },
+    { nome: "Costas", imagem: require("../../../img/costas.jpg") },
+    { nome: "Biceps", imagem: require("../../../img/biceps.jpg") },
+    { nome: "Triceps", imagem: require("../../../img/triceps.jpg") },
+    { nome: "Perna", imagem: require("../../../img/perna.jpg") },
+    { nome: "Abdominal", imagem: require("../../../img/abdominal.jpg") },
+  ];
+
+  const handleMusclePress = (muscle) => {
+    navigation.navigate("GrupoMuscular", { grupoMuscular: muscle.nome });
+  };
 
   return (
     <View style={styles.container}>
-      <View style={styles.top1}>
-        <View>
-          <Feather
-            name="arrow-left-circle"
-            size={30}
-            color={"#fff"}
-            onPress={() => navigation.goBack()}
-          />
-        </View>
+      <LinearGradient
+        style={{
+          width: '100%',
+          flex: 1,
+          height: '100%',
+        }}
+        start={{ x: 0, y: 1 }}
+        end={{ x: 1, y: 0 }}
+        colors={['#000', '#0f0f0f', 'rgba(15, 15, 15, 0.88)', '#121212', '#252525']}
+      >
+      <View style={styles.header}>
+        <Feather
+          name="arrow-left-circle"
+          size={30}
+          color={"#fff"}
+          onPress={() => navigation.goBack()}
+        />
       </View>
 
-      <View style={styles.main}>
-        <View style={styles.mainTreino}>
-          <TouchableOpacity
-            style={styles.treinos}
-            onPress={() => navigation.navigate("GrupoMuscular", {grupoMuscular: musculoEscolhido[0]})}
-          >
-            <ImageBackground
-              source={require("../../../img/peito.jpg")}
-              style={styles.image}
+      <ScrollView contentContainerStyle={styles.scrollContainer}>
+        <View style={styles.muscleContainer}>
+          {musculoEscolhido.map((muscle, index) => (
+            <TouchableOpacity
+              key={index}
+              style={styles.muscleCard}
+              onPress={() => handleMusclePress(muscle)}
             >
-              <Text style={styles.titulo}>Peitoral</Text>
-            </ImageBackground>
-          </TouchableOpacity>
-          
-          <TouchableOpacity
-            style={styles.treinos}
-            onPress={() => navigation.navigate("GrupoMuscular", {grupoMuscular: musculoEscolhido[1]})}
-          >
-            <ImageBackground
-              source={require("../../../img/ombro.jpg")}
-              resizeMode="cover"
-              style={styles.image}
-            >
-              <Text style={styles.titulo}>Ombro</Text>
-            </ImageBackground>
-          </TouchableOpacity>  
-
-          <TouchableOpacity
-            style={styles.treinos}
-            onPress={() => navigation.navigate("GrupoMuscular", {grupoMuscular: musculoEscolhido[2]})}
-          >
-            <ImageBackground
-              source={require("../../../img/costas.jpg")}
-              resizeMode="cover"
-              style={styles.image}
-            >
-              <Text style={styles.titulo}>Costas</Text>
-            </ImageBackground>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.treinos}
-            onPress={() => navigation.navigate("GrupoMuscular", {grupoMuscular: musculoEscolhido[3]})}
-          >
-            <ImageBackground
-              source={require("../../../img/biceps.jpg")}
-              resizeMode="cover"
-              style={styles.image}
-            >
-              <Text style={styles.titulo}>Bíceps</Text>
-            </ImageBackground>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.treinos}
-            onPress={() => navigation.navigate("GrupoMuscular", {grupoMuscular: musculoEscolhido[4]})}
-          >
-            <ImageBackground
-              source={require("../../../img/triceps.jpg")}
-              resizeMode="cover"
-              style={styles.image}
-            >
-              <Text style={styles.titulo}>Tríceps</Text>
-            </ImageBackground>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.treinos}
-            onPress={() => navigation.navigate("GrupoMuscular", {grupoMuscular: musculoEscolhido[5]})}
-          >
-            <ImageBackground
-              source={require("../../../img/perna.jpg")}
-              resizeMode="cover"
-              style={styles.image}
-            >
-              <Text style={styles.titulo}>Inferiores</Text>
-            </ImageBackground>
-          </TouchableOpacity>
-
-          <TouchableOpacity
-            style={styles.treinos}
-            onPress={() => navigation.navigate("GrupoMuscular", {grupoMuscular: musculoEscolhido[6]})}
-          >
-            <ImageBackground
-              source={require("../../../img/abdominal.jpg")}
-              resizeMode="cover"
-              style={styles.image}
-            >
-              <Text style={styles.titulo}>Abdominal</Text>
-            </ImageBackground>
-          </TouchableOpacity>
+              <Image
+                source={muscle.imagem}
+                style={styles.image}
+              />
+              <View style={styles.overlay}>
+                <Text style={styles.title}>{muscle.nome}</Text>
+              </View>
+            </TouchableOpacity>
+          ))}
         </View>
-      </View>
+      </ScrollView>
+      </LinearGradient>
     </View>
   );
-}
+};
 
 const styles = StyleSheet.create({
-  mainTreino: {
-    height: "100%",
-    display: "flex",
-    width: "100%",
-  },
-
   container: {
     flex: 1,
     backgroundColor: "#000",
-    color: "#FFF",
     marginTop: 30,
   },
-
-  top1: {
+  header: {
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-
-    width: "100%",
-    textAlign: "center",
     padding: 10,
+    paddingBottom: 10,
   },
-
-  topTitulo: {
-    color: "#000",
-  },
-  main: {
-    width: "100%",
-    maxHeight: "100%",
-  },
-  treinos: {
-    display: "flex",
-    flexDirection: "row",
-    alignItems: "center",
+  scrollContainer: {
+    flexGrow: 1,
     justifyContent: "center",
-    background: "transparent",
-
-    marginBottom: 10,
-    padding: 10,
-    borderBottomWidth: 1,
-    borderColor: "#fff",
-    width: "100%",
-    height: "12.45%",
+    alignItems: "center",
   },
-
-  titulo: {
+  muscleContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+    padding: 10,
+  },
+  muscleCard: {
+    width: "45%",
+    aspectRatio: 1, // To maintain a square aspect ratio
+    marginBottom: 20,
+    overflow: "hidden",
+    borderRadius: 15,
+    position: "relative",
+  },
+  image: {
+    flex: 1,
+    borderRadius: 15,
+  },
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    padding: 15,
+    borderRadius: 15,
+    justifyContent: "center",
+    alignItems: "center",
+    position: "absolute",
+  },
+  title: {
     color: "#FFF",
     fontSize: 20,
     textAlign: "center",
-  },
-
-  image: {
-    width: "30%",
-    height: "100%",
-    flex: 1,
+    fontWeight: "bold",
   },
 });
+
+export default CriarTreino;

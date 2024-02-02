@@ -22,6 +22,10 @@ export default function GrupoMuscular() {
     return () => unsubscribe();
   }, [grupoMuscular, exercicios]);
 
+  const handleExerciseClick = (item) => {
+    navigation.navigate('DetalheExercicio', { exercicio: item });
+  };
+
   const renderExerciseItem = ({ item }) => (
     <TouchableOpacity onPress={() => handleExerciseClick(item)}>
       <View style={styles.exerciseContainer}>
@@ -42,7 +46,7 @@ export default function GrupoMuscular() {
           color={"#fff"}
           onPress={() => navigation.navigate("CriarTreino")}
         />
-        
+
       </View>
       <FlatList
         style={styles.flatList}
