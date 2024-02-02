@@ -7,6 +7,7 @@ import {
   SafeAreaView,
   TextInput,
   Image,
+  Text,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import Ionicons from "@expo/vector-icons/Ionicons";
@@ -16,6 +17,9 @@ const Login = () => {
   const navigation = useNavigation();
   const [emailDoUsuario, setEmailDoUsuario] = useState("joao@gmail.com");
   const [senha, setSenha] = useState("123456");
+  const [showPassword, setShowPassword] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [showErrorText, setShowErrorText] = useState(false);
 
   const loginSuccess = async () => {
     try {
@@ -24,11 +28,18 @@ const Login = () => {
       if (user) {
         setEmailDoUsuario("");
         setSenha("");
+        setPasswordError(false);
+        setShowErrorText(false);
         navigation.navigate("Tabs");
       }
     } catch (error) {
-      Alert.alert("Erro", error.message);
+      setPasswordError(true);
+      setShowErrorText(true);
       console.log(error.message);
+      setTimeout(() => {
+        setShowErrorText(false);
+        setPasswordError(false);
+      }, 1000);
     }
   };
 
@@ -54,11 +65,19 @@ const Login = () => {
             style={styles.icon}
           />
           <TextInput
-            style={styles.input}
+            style={[
+              passwordError ? styles.input2 : styles.input,
+                passwordError && {
+                  borderColor: "rgba(255, 57, 83, 1)",
+                  backgroundColor: "rgba(255, 57, 83, 1)",
+                  marginBottom: 30,
+                },
+              ]}
             value={emailDoUsuario}
             fontSize={16}
-            placeholderTextColor={"#fff"}
-            color={"#fff"}
+            placeholder="Email"
+            placeholderTextColor="#fff"
+            color="#fff"
             onChangeText={(text) => setEmailDoUsuario(text)}
           />
         </View>
@@ -72,14 +91,35 @@ const Login = () => {
             style={styles.icon}
           />
           <TextInput
-            style={styles.input}
+           style={[
+            passwordError ? styles.input2 : styles.input,
+              passwordError && {
+                borderColor: "rgba(255, 57, 83, 1)",
+                backgroundColor: "rgba(255, 57, 83, 1)",
+              },
+            ]}
             value={senha}
             fontSize={16}
-            placeholderTextColor={"#fff"}
-            color={"#fff"}
+            placeholder="Senha"
+            placeholderTextColor="#fff"
+            color="#fff"
+            secureTextEntry={!showPassword}
             onChangeText={(text) => setSenha(text)}
           />
+          <Ionicons
+            name={showPassword ? "eye-off" : "eye"}
+            id="toggle-password"
+            size={24}
+            color="#fff"
+            style={styles.icon2}
+            onPress={() => setShowPassword(!showPassword)}
+          />
         </View>
+
+        {showErrorText && (
+          <Text style={styles.errorText}>Usuário / Senha incorreta. Tente novamente.</Text>
+        )}
+
         <Button
           style={styles.button}
           title="Login"
@@ -111,6 +151,10 @@ const styles = StyleSheet.create({
     maxHeight: "100vh",
     maxWidth: "100vw",
   },
+  errorText: {
+    color: "rgba(255, 57, 83, 1)",
+    marginBottom: 30,
+  },
   input: {
     color: "rgba(255, 255, 255, 0.24)",
     borderStyle: "solid",
@@ -121,6 +165,19 @@ const styles = StyleSheet.create({
     width: 200,
     fontSize: 20,
     marginBottom: 30,
+    padding: 9.5,
+  },
+
+  input2: {
+    color: "rgba(255, 255, 255, 0.24)",
+    borderStyle: "solid",
+    borderColor: "rgba(255, 57, 83, 1)",
+    borderWidth: 1,
+    borderTopEndRadius: 10,
+    borderBottomEndRadius: 10,
+    width: 200,
+    fontSize: 20,
+    marginBottom: 5,
     padding: 9.5,
   },
 
@@ -146,6 +203,21 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     paddingLeft: 5,
   },
+
+  icon2: {
+    backgroundColor: "rgba(255, 57, 83, 1)",
+    height: 49,
+    paddingBottom: 1,
+    borderTopRightRadius: 10,
+    borderBottomRightRadius: 10,
+    textAlign: "center",
+    justifyContent: "center",
+    alignItems: 'center',
+    paddingTop: '4%',
+    paddingLeft: 5,
+    paddingRight: 5,
+  },
+
 });
 
 export default Login;
