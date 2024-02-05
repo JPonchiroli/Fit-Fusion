@@ -122,13 +122,16 @@ const TreinoSelecionado = ({ route }) => {
       <View style={styles.titlePView}>
         <Text style={styles.titleP}>{nomeTreino}</Text>
       </View>
-      <ScrollView>
+      <ScrollView style={styles.scrollviewTreino}>
       {Array.isArray(imagensExercicios) && imagensExercicios.length > 0 ? (
-        imagensExercicios.map((exercicio) => (
+        imagensExercicios.map((exercicio, index) => (
           <View>
             <TouchableOpacity
               key={exercicio.nomeExercicio}
-              style={styles.touchableExercise}
+              style={[
+                styles.touchableExercise,
+                { marginBottom: index === imagensExercicios.length - 1 ? '40%' : 10},
+              ]}
               onPress={() => {
                 navigation.navigate("ExercicioSelecionado", {
                   exercicio,
@@ -276,6 +279,13 @@ const styles = StyleSheet.create({
     backgroundColor: "#333",
     borderRadius: 8,
   },
+  lastExerciseStyle: {
+    paddingBottom: 10, // Ou qualquer valor desejado para o paddingBottom
+  },
+
+  scrollviewTreino: {
+    height: '5%',
+  }
 });
 
 export default TreinoSelecionado;
