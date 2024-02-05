@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Image,
   Alert,
+  ScrollView,
 } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
@@ -121,7 +122,7 @@ const TreinoSelecionado = ({ route }) => {
       <View style={styles.titlePView}>
         <Text style={styles.titleP}>{nomeTreino}</Text>
       </View>
-
+      <ScrollView>
       {Array.isArray(imagensExercicios) && imagensExercicios.length > 0 ? (
         imagensExercicios.map((exercicio) => (
           <View>
@@ -150,6 +151,7 @@ const TreinoSelecionado = ({ route }) => {
               </View>
             </TouchableOpacity>
           </View>
+          
         ))
       ) : (
         <View style={styles.titleSView}>
@@ -165,6 +167,7 @@ const TreinoSelecionado = ({ route }) => {
           </Text>
         </View>
       )}
+      </ScrollView>
 
       <TouchableOpacity
         style={styles.adicionarExercicioButton}
@@ -183,7 +186,9 @@ const TreinoSelecionado = ({ route }) => {
         <Text style={styles.deleteText}>Deletar</Text>
       </TouchableOpacity>
     </View>
+    
   );
+  
 };
 
 const styles = StyleSheet.create({
