@@ -1,4 +1,4 @@
-import {database} from './firebaseConfig'
+import { database } from './firebaseConfig'
 import { ref, set, onValue, get, push } from "firebase/database";
 
 export const recuperaTreinosDoUsuario = async (uid, setTreinosDoUsuario) => {
@@ -47,13 +47,12 @@ export const recuperaInfoUsuario = async (uid, setUserInfo) => {
 };
 
 export const enviarTreino = async (uid, nomeTreino) => {
-  console.log('UID: ' + uid);
   try {
     // Verifique se o usuário está autenticado antes de prosseguir
     if (uid) {
       // Adicione o treino ao nó 'treinos' no Firebase usando o UID do usuário
       const treinosRef = ref(database, `treinos/${uid}`);
-      
+
       await push(treinosRef, {
         nomeTreino: nomeTreino,
       });
@@ -98,3 +97,22 @@ export const recuperaExerciciosDoUsuario = async (grupoMuscular, setExerciciosDo
     console.error("Erro ao recuperar treinos do usuário:", error);
   }
 };
+
+export const adicionarExercicio = async (usuarioUID, treinoUid, idImagem, nomeExercicio) => {
+  try {
+    if (usuarioUID) {
+      const treinosRef = ref(database, `treinos/${usuarioUID}/${treinoUid}/exercicios`);
+
+      await push(treinosRef, {
+        nomeExercicio: nomeExercicio,
+        idImagem: idImagem
+      });
+
+      console.log("Exercicio adicionado com sucesso!");
+    } else {
+      console.error("Usuário não autenticado.");
+    }
+  } catch (error) {
+    console.error("Erro ao adicionar Exercicio:", error);
+  }
+}

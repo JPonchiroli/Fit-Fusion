@@ -10,27 +10,30 @@ import {
 import { Feather } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { getDownloadURL, ref } from "@firebase/storage";
-import { storage } from "../../../../../config/firebaseConfig";
-import Toast from "react-native-toast-message";
+import { auth, storage } from "../../../../../config/firebaseConfig";
+import { adicionarExercicio } from "../../../../../config/firebaseDatabase";
 
 export default function DetalhesExercicio() {
   const route = useRoute();
   const navigation = useNavigation();
-  // const user = firebase.auth().currentUser;
-  const [ultimoTreinoId, setUltimoTreinoId] = useState(null);
   const [urlImagem, setUrlImagem] = useState(null);
   const { exercicio } = route.params || {};
   const { treinoUID } = route.params;
   const { grupoMuscular } = route.params;
-  console.log(grupoMuscular);
-  console.log(treinoUID);
-  console.log("Exercicios:", exercicio.nome);
+  const usuarioUID = auth.currentUser.uid;
+  const treinoUid = treinoUID.treinoUID;
+  const idImagem = exercicio.idImagem;
+  const nomeExercicio = exercicio.nome
+  console.log(usuarioUID);
+  console.log(treinoUid);
+  console.log(idImagem);
+  console.log(nomeExercicio);
+  
 
   useEffect(() => {
     const carregarImagemExercicio = async () => {
       try {
         const caminhoRelativo = `${grupoMuscular}/${exercicio.idImagem}`;
-        // Use o ref diretamente do pacote de storage
         const url = await getDownloadURL(
           ref(storage, `Exercicios/${caminhoRelativo}`)
         );
@@ -44,6 +47,11 @@ export default function DetalhesExercicio() {
     };
     carregarImagemExercicio();
   }, []);
+
+  function handleAdicionarExercicio(){
+    adicionarExercicio(usuarioUID, treinoUid, idImagem, nomeExercicio)
+    navigation.goBack()
+  }
 
   return (
     <View style={styles.container}>
@@ -67,7 +75,7 @@ export default function DetalhesExercicio() {
         <Text style={styles.description}>{exercicio.execucao}</Text>
       </ScrollView>
       <TouchableOpacity
-        /*onPress={adicionarAoTreino}*/ style={styles.addButton}
+        onPress={handleAdicionarExercicio} style={styles.addButton}
       >
         <Text style={styles.addButtonText}>Adicionar Exercício</Text>
       </TouchableOpacity>
