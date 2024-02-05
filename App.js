@@ -13,7 +13,6 @@ import TreinoSelecionado from "./src/screens/Treinos/TreinoSelecionado";
 import ExercicioSelecionado from "./src/screens/Treinos/TreinoSelecionado/ExercicioSelecionado";
 
 const Stack = createStackNavigator();
-//const Tab = createBottomTabNavigator();
 
 const App = () => {
   return (

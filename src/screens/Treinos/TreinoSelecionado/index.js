@@ -104,7 +104,7 @@ const TreinoSelecionado = ({ route }) => {
 
     const handleAdicionarExercicio = () => {
         // Adicione o código para abrir a tela CriarTreino aqui
-        navigation.navigate('CriarTreino');
+        navigation.navigate('CriarTreino', {treinoUID: treinoUID});
     };
 
   return (
@@ -114,7 +114,7 @@ const TreinoSelecionado = ({ route }) => {
           name="arrow-left-circle"
           size={30}
           color={"#fff"}
-          onPress={() => navigation.navigate("Treinos")}
+          onPress={() => navigation.goBack()}
         />
       </View>
 

@@ -7,12 +7,15 @@ import {
   TouchableOpacity,
   ScrollView,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import { LinearGradient } from 'expo-linear-gradient';
 import { Feather } from "@expo/vector-icons";
 
 const CriarTreino = () => {
+  const route = useRoute();
   const navigation = useNavigation();
+  const treinoUID = route.params;
+  console.log(treinoUID.treinoUID)
   const musculoEscolhido = [
     { nome: "Peito", imagem: require("../../../img/peito.jpg") },
     { nome: "Ombro", imagem: require("../../../img/ombro.jpg") },
@@ -24,7 +27,7 @@ const CriarTreino = () => {
   ];
 
   const handleMusclePress = (muscle) => {
-    navigation.navigate("GrupoMuscular", { grupoMuscular: muscle.nome });
+    navigation.navigate("GrupoMuscular", { grupoMuscular: muscle.nome, treinoUID: treinoUID });
   };
 
   return (

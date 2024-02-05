@@ -12,7 +12,7 @@ export default function GrupoMuscular() {
   const navigation = useNavigation();
 
   const { grupoMuscular } = route.params;
-
+  const { treinoUID } = route.params;
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
@@ -23,7 +23,7 @@ export default function GrupoMuscular() {
   }, [grupoMuscular, exercicios]);
 
   const handleExerciseClick = (item) => {
-    navigation.navigate('DetalheExercicio', { exercicio: item });
+    navigation.navigate('DetalheExercicio', { exercicio: item,  treinoUID: treinoUID, grupoMuscular: grupoMuscular });
   };
 
   const renderExerciseItem = ({ item }) => (
@@ -44,7 +44,7 @@ export default function GrupoMuscular() {
           name="arrow-left-circle"
           size={30}
           color={"#fff"}
-          onPress={() => navigation.navigate("CriarTreino")}
+          onPress={() => navigation.goBack()}
         />
 
       </View>
