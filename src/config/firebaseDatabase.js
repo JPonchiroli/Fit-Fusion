@@ -116,3 +116,60 @@ export const adicionarExercicio = async (usuarioUID, treinoUid, idImagem, nomeEx
     console.error("Erro ao adicionar Exercicio:", error);
   }
 }
+
+export const adicionarHistorico = async (usuarioUID, nomeExercicio, peso, repeticoes) => {
+  try {
+    if (usuarioUID) {
+      const treinosRef = ref(database, `historico/${usuarioUID}/${nomeExercicio}/`);
+
+      function formatarDataParaString(data) {
+        const options = {
+          day: 'numeric',
+          month: 'numeric',
+          year: 'numeric',
+          hour: 'numeric',
+          minute: 'numeric',
+          hour12: false,
+          timeZone: 'America/Sao_Paulo'
+        };
+        return data.toLocaleString('pt-BR', options);
+      }
+
+      const dataFormatada = formatarDataParaString(new Date());
+
+      await push(treinosRef, {
+        data: dataFormatada, // Adiciona a data atual
+        peso: parseFloat(peso), // Converte o peso para número
+        repeticoes: parseInt(repeticoes),
+      });
+
+      console.log("Histórico adicionado com sucesso!");
+    } else {
+      console.error("Usuário não autenticado.");
+    }
+  } catch (error) {
+    console.error("Erro ao adicionar Histórico:", error);
+  }
+}
+
+export const carregarHistorico = async (usuarioUID, nomeExercicio, setHistoricoData) => {
+  try {
+    const historicoRef = ref(database, `historico/${usuarioUID}/${nomeExercicio}`);
+    
+    // Use onValue para observar mudanças nos dados
+    onValue(historicoRef, (snapshot) => {
+      const historico = snapshot.val();
+      if (historico) {
+        const historicoArray = Object.values(historico);
+        // Ordena a lista de forma decrescente pela data
+        const historicoOrdenado = historicoArray.sort((a, b) => new Date(b.data) - new Date(a.data));
+        const historicoReverso = historicoOrdenado.reverse(); // Invertendo a ordem
+        setHistoricoData(historicoReverso);
+      } else {
+        setHistoricoData([]);
+      }
+    });
+  } catch (error) {
+    console.error('Erro ao carregar histórico:', error);
+  }
+};

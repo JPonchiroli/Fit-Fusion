@@ -23,12 +23,7 @@ export default function DetalhesExercicio() {
   const usuarioUID = auth.currentUser.uid;
   const treinoUid = treinoUID.treinoUID;
   const idImagem = exercicio.idImagem;
-  const nomeExercicio = exercicio.nome
-  console.log(usuarioUID);
-  console.log(treinoUid);
-  console.log(idImagem);
-  console.log(nomeExercicio);
-  
+  const nomeExercicio = exercicio.nome 
 
   useEffect(() => {
     const carregarImagemExercicio = async () => {

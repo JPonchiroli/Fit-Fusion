@@ -13,6 +13,7 @@ import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { auth } from "./../../../../config/firebaseConfig";
 import StyledTextInput from "../../../../components/StyledTextInput";
+import { adicionarHistorico, carregarHistorico } from "../../../../config/firebaseDatabase";
 
 console.disableYellowBox = true;
 
@@ -28,74 +29,16 @@ export default function ExercicioSelecionado({ route }) {
   const nomeExercicio = exercicio.nomeExercicio;
   const nomeTreino = treino.nomeTreino;
 
-  console.log("Usuario UID: " + usuarioUID);
-  console.log("Exercicio: " + exercicio.nomeTreino);
-  console.log("Treino: " + nomeTreino);
-  /*
-    useEffect(() => {
-      
-        const carregarHistorico = async () => {
-            try {
-                const historicoRef = firebase.database().ref(`historico/${usuarioUID}/${nomeExercicio}`);
-                historicoRef.on('value', (snapshot) => {
-                    const historico = snapshot.val();
-                    if (historico) {
-                        const historicoArray = Object.values(historico);
-                        // Ordena a lista de forma decrescente pela data
-                        const historicoOrdenado = historicoArray.sort((a, b) => new Date(b.data) - new Date(a.data));
-                        const historicoReverso = historicoOrdenado.reverse(); // Invertendo a ordem
-                        setHistoricoData(historicoReverso);
-                    } else {
-                        setHistoricoData([]);
-                    }
-                });
-            } catch (error) {
-                console.error('Erro ao carregar histórico:', error);
-            }
-        };
 
-        carregarHistorico();
-    }, [usuarioUID, nomeExercicio, reloadPage]);
+  useEffect(() => {
+    carregarHistorico(usuarioUID, nomeExercicio, setHistoricoData);
+  })
 
-    const adicionarHistorico = async () => {
-        try {
-            const historicoRef = firebase
-                .database()
-                .ref(`historico/${usuarioUID}/${nomeExercicio}`);
-
-            function formatarDataParaString(data) {
-                const options = {
-                    day: 'numeric',
-                    month: 'numeric',
-                    year: 'numeric',
-                    hour: 'numeric',
-                    minute: 'numeric',
-                    hour12: false,
-                    timeZone: 'America/Sao_Paulo'
-                };
-                return data.toLocaleString('pt-BR', options);
-            }
-
-            const dataFormatada = formatarDataParaString(new Date());
-
-            const novoHistorico = {
-                data: dataFormatada,
-                peso: `${peso} Kg`,
-                repeticoes: repeticoes,
-            };
-
-            await historicoRef.push(novoHistorico);
-
-            setPeso('');
-            setRepeticoes('');
-
-            console.log('Histórico adicionado com sucesso!');
-            setReloadPage((prev) => !prev);
-        } catch (error) {
-            console.error('Erro ao adicionar histórico:', error);
-        }
-    };
-*/
+  function handleAdicionarHistorico() {
+    adicionarHistorico(usuarioUID, nomeExercicio, peso, repeticoes)
+    setPeso('')
+    setRepeticoes('')
+  }
 
   return (
     <View style={styles.container}>
@@ -148,7 +91,7 @@ export default function ExercicioSelecionado({ route }) {
           </View>
 
           <TouchableOpacity
-          //onPress={adicionarHistorico}
+            onPress={handleAdicionarHistorico}
           >
             <Feather name="plus-circle" size={30} color={"#F4485E"} />
           </TouchableOpacity>

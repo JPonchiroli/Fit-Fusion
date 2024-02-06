@@ -1,8 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
-import { auth, storage } from "../../../../config/firebaseConfig";
+import { auth } from "../../../../config/firebaseConfig";
 import { recuperaExerciciosDoUsuario } from "../../../../config/firebaseDatabase";
-import { getDownloadURL, ref } from "firebase/storage";
 import { Feather } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 
