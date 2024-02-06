@@ -12,6 +12,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import { getDownloadURL, ref } from "@firebase/storage";
 import { auth, storage } from "../../../../../config/firebaseConfig";
 import { adicionarExercicio } from "../../../../../config/firebaseDatabase";
+import Toast from "react-native-toast-message";
 
 export default function DetalhesExercicio() {
   const route = useRoute();
@@ -45,6 +46,16 @@ export default function DetalhesExercicio() {
 
   function handleAdicionarExercicio(){
     adicionarExercicio(usuarioUID, treinoUid, idImagem, nomeExercicio)
+
+    Toast.show({
+      type: 'success',
+      position: 'top',
+      text1: 'Exercicio adicionado!',
+      theme: "dark",
+      progress: undefined,
+      visibilityTime: 2000,
+  });
+
     navigation.goBack()
   }
 

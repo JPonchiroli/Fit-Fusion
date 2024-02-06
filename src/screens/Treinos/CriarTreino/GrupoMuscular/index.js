@@ -43,7 +43,8 @@ export default function GrupoMuscular() {
           name="arrow-left-circle"
           size={30}
           color={"#fff"}
-          onPress={() => navigation.goBack()}
+          onPress={() =>
+            navigation.navigate("Treinos")}
         />
 
       </View>
