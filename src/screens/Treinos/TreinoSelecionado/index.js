@@ -54,13 +54,7 @@ const TreinoSelecionado = ({ route }) => {
                   ref(storage, `Exercicios/${caminhoRelativo}`)
                 );
                 break;
-              } catch (error) {
-                console.log(
-                  `Tentativa ${i + 1}: Imagem não encontrada para o exercício ${
-                    exercicio.nomeExercicio
-                  } no caminho ${caminhoRelativo}.`
-                );
-              }
+              } catch (error) {}
             }
 
             return { ...exercicio, urlImagem: url };
@@ -77,36 +71,36 @@ const TreinoSelecionado = ({ route }) => {
 
     carregarImagensExercicios();
   }, [exercicios]);
-  
-    const handleDelete = () => {
-        Alert.alert(
-            'Confirmação',
-            'Deseja realmente excluir este Treino?',
-            [
-                { text: 'Cancelar', style: 'cancel' },
-                { text: 'Confirmar', onPress: () => deleteTreino() },
-            ],
-            { cancelable: false }
-        );
-    };
 
-    function deleteTreino() {
-      deletarTreino(usuarioUID, treinoUID)
-      navigation.goBack();
-        Toast.show({
-            type: 'success',
-            position: 'top',
-            text1: 'Treino Excluído com Sucesso!',
-            theme: "dark",
-            progress: undefined,
-            visibilityTime: 2000,
-        });
-    };
+  const handleDelete = () => {
+    Alert.alert(
+      "Confirmação",
+      "Deseja realmente excluir este Treino?",
+      [
+        { text: "Cancelar", style: "cancel" },
+        { text: "Confirmar", onPress: () => deleteTreino() },
+      ],
+      { cancelable: false }
+    );
+  };
 
-    const handleAdicionarExercicio = () => {
-        // Adicione o código para abrir a tela CriarTreino aqui
-        navigation.navigate('CriarTreino', {treinoUID: treinoUID});
-    };
+  function deleteTreino() {
+    deletarTreino(usuarioUID, treinoUID);
+    navigation.goBack();
+    Toast.show({
+      type: "success",
+      position: "top",
+      text1: "Treino Excluído com Sucesso!",
+      theme: "dark",
+      progress: undefined,
+      visibilityTime: 2000,
+    });
+  }
+
+  const handleAdicionarExercicio = () => {
+    // Adicione o código para abrir a tela CriarTreino aqui
+    navigation.navigate("CriarTreino", { treinoUID: treinoUID });
+  };
 
   return (
     <View style={styles.container}>
@@ -123,53 +117,55 @@ const TreinoSelecionado = ({ route }) => {
         <Text style={styles.titleP}>{nomeTreino}</Text>
       </View>
       <ScrollView style={styles.scrollviewTreino}>
-      {Array.isArray(imagensExercicios) && imagensExercicios.length > 0 ? (
-        imagensExercicios.map((exercicio, index) => (
-          <View>
-            <TouchableOpacity
-              key={exercicio.nomeExercicio}
-              style={[
-                styles.touchableExercise,
-                { marginBottom: index === imagensExercicios.length - 1 ? '40%' : 10},
-              ]}
-              onPress={() => {
-                navigation.navigate("ExercicioSelecionado", {
-                  exercicio,
-                  treino,
-                });
-              }}
-            >
-              <View style={styles.exercicioItem}>
-                {exercicio.urlImagem ? (
-                  <Image
-                    source={{ uri: exercicio.urlImagem }}
-                    style={{ width: 100, height: 100, marginRight: 10 }}
-                  />
-                ) : (
-                  <Text style={styles.title}>
-                    Imagem não disponível para este exercício.
-                  </Text>
-                )}
-                <Text style={styles.title}>{exercicio.nomeExercicio}</Text>
-              </View>
-            </TouchableOpacity>
+        {Array.isArray(imagensExercicios) && imagensExercicios.length > 0 ? (
+          imagensExercicios.map((exercicio, index) => (
+            <View>
+              <TouchableOpacity
+                key={exercicio.nomeExercicio}
+                style={[
+                  styles.touchableExercise,
+                  {
+                    marginBottom:
+                      index === imagensExercicios.length - 1 ? "40%" : 10,
+                  },
+                ]}
+                onPress={() => {
+                  navigation.navigate("ExercicioSelecionado", {
+                    exercicio,
+                    treino,
+                  });
+                }}
+              >
+                <View style={styles.exercicioItem}>
+                  {exercicio.urlImagem ? (
+                    <Image
+                      source={{ uri: exercicio.urlImagem }}
+                      style={{ width: 100, height: 100, marginRight: 10 }}
+                    />
+                  ) : (
+                    <Text style={styles.title}>
+                      Imagem não disponível para este exercício.
+                    </Text>
+                  )}
+                  <Text style={styles.title}>{exercicio.nomeExercicio}</Text>
+                </View>
+              </TouchableOpacity>
+            </View>
+          ))
+        ) : (
+          <View style={styles.titleSView}>
+            <Feather
+              style={styles.viewX}
+              name="frown"
+              size={120}
+              color={"rgba(255, 57, 83, 1)"}
+              onPress={() => navigation.navigate("Treinos")}
+            />
+            <Text style={styles.titleS}>
+              Adicione ou Aguarde os Exercícios.
+            </Text>
           </View>
-          
-        ))
-      ) : (
-        <View style={styles.titleSView}>
-          <Feather
-            style={styles.viewX}
-            name="frown"
-            size={120}
-            color={"rgba(255, 57, 83, 1)"}
-            onPress={() => navigation.navigate("Treinos")}
-          />
-          <Text style={styles.titleS}>
-            Adicione ou Aguarde os Exercícios.
-          </Text>
-        </View>
-      )}
+        )}
       </ScrollView>
 
       <TouchableOpacity
@@ -179,19 +175,13 @@ const TreinoSelecionado = ({ route }) => {
         <Text style={styles.adicionarExercicioButtonText}>
           Adicionar Exercício
         </Text>
-        
       </TouchableOpacity>
 
-      <TouchableOpacity
-        style={styles.buttonDelete}
-        onPress={handleDelete}
-      >
+      <TouchableOpacity style={styles.buttonDelete} onPress={handleDelete}>
         <Text style={styles.deleteText}>Deletar</Text>
       </TouchableOpacity>
     </View>
-    
   );
-  
 };
 
 const styles = StyleSheet.create({
@@ -266,11 +256,11 @@ const styles = StyleSheet.create({
   },
   adicionarExercicioButtonText: {
     color: "#000",
-    display: 'flex',
+    display: "flex",
     fontSize: 16,
-    alignItems: 'center',
-    justifyContent: 'center',
-    alignContent: 'center'
+    alignItems: "center",
+    justifyContent: "center",
+    alignContent: "center",
   },
   touchableExercise: {
     // Adicione os estilos desejados para o TouchableOpacity dos exercícios
@@ -284,8 +274,8 @@ const styles = StyleSheet.create({
   },
 
   scrollviewTreino: {
-    height: '5%',
-  }
+    height: "5%",
+  },
 });
 
 export default TreinoSelecionado;

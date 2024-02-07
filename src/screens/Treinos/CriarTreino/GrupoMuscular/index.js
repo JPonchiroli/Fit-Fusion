@@ -44,14 +44,14 @@ export default function GrupoMuscular() {
           size={30}
           color={"#fff"}
           onPress={() =>
-            navigation.navigate("Treinos")}
+            navigation.goBack()}
         />
 
       </View>
       <FlatList
         style={styles.flatList}
         data={exercicios}
-        keyExtractor={(item) => item.id}
+        keyExtractor={(item, index) => item.id?.toString() ?? index.toString()} 
         renderItem={renderExerciseItem}
       />
     </View>

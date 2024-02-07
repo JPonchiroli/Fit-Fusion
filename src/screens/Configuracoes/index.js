@@ -201,7 +201,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     borderBottomColor: "#000",
     borderBottomWidth: 0,
-    borderBottomStyle: "solid",
+    borderStyle: "solid",
     padding: 1,
   },
   inputEditavel: {

@@ -19,6 +19,7 @@ import { Feather } from "@expo/vector-icons";
 import Toast from "react-native-toast-message";
 
 export default function Home({ navigation }) {
+  console.disableYellowBox = true;
   const uid = auth.currentUser.uid;
   const [userInfo, setUserInfo] = useState(null);
   const [treinosDoUsuario, setTreinosDoUsuario] = useState([]);

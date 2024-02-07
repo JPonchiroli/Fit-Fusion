@@ -17,7 +17,7 @@ const CriarTreino = () => {
   const treinoUID = route.params;
   console.log(treinoUID.treinoUID)
   const musculoEscolhido = [
-    { nome: "Peito", imagem: require("../../../img/peito.jpg") },
+    { nome: "Peito", imagem: require("../../../img/peito.png") },
     { nome: "Ombro", imagem: require("../../../img/ombro.jpg") },
     { nome: "Costas", imagem: require("../../../img/costas.jpg") },
     { nome: "Biceps", imagem: require("../../../img/biceps.jpg") },
@@ -61,7 +61,7 @@ const CriarTreino = () => {
             >
               <Image
                 source={muscle.imagem}
-                style={styles.image}
+                style={[styles.image, { resizeMode: 'cover' }]}
               />
               <View style={styles.overlay}>
                 <Text style={styles.title}>{muscle.nome}</Text>
@@ -109,6 +109,8 @@ const styles = StyleSheet.create({
   },
   image: {
     flex: 1,
+    width: "100%",
+    height: "100%",
     borderRadius: 15,
   },
   overlay: {

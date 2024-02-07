@@ -13,7 +13,11 @@ import { useNavigation } from "@react-navigation/native";
 import { Feather } from "@expo/vector-icons";
 import { auth } from "./../../../../config/firebaseConfig";
 import StyledTextInput from "../../../../components/StyledTextInput";
-import { adicionarHistorico, carregarHistorico } from "../../../../config/firebaseDatabase";
+import {
+  adicionarHistorico,
+  carregarHistorico,
+} from "../../../../config/firebaseDatabase";
+import Toast from "react-native-toast-message";
 
 console.disableYellowBox = true;
 
@@ -23,21 +27,30 @@ export default function ExercicioSelecionado({ route }) {
   const [peso, setPeso] = useState("");
   const [repeticoes, setRepeticoes] = useState("");
   const [historicoData, setHistoricoData] = useState(null);
-  const [reloadPage, setReloadPage] = useState(false);
 
   const usuarioUID = auth.currentUser.uid;
   const nomeExercicio = exercicio.nomeExercicio;
   const nomeTreino = treino.nomeTreino;
 
-
   useEffect(() => {
     carregarHistorico(usuarioUID, nomeExercicio, setHistoricoData);
-  })
+  }, []);
 
   function handleAdicionarHistorico() {
-    adicionarHistorico(usuarioUID, nomeExercicio, peso, repeticoes)
-    setPeso('')
-    setRepeticoes('')
+    if (peso != "" && repeticoes != "") {
+      adicionarHistorico(usuarioUID, nomeExercicio, peso, repeticoes);
+      setPeso("");
+      setRepeticoes("");
+    } else {
+      Toast.show({
+        type: "error",
+        position: "top",
+        text1: "Preencha Todos os Campos",
+        theme: "dark",
+        progress: undefined,
+        visibilityTime: 2000,
+      });
+    }
   }
 
   return (
@@ -70,9 +83,10 @@ export default function ExercicioSelecionado({ route }) {
         </View>
 
         <View style={styles.info}>
-          <View style={styles.peso}>
+          <View>
             <Text style={styles.peso1}>Peso</Text>
             <StyledTextInput
+              keyboardType="numeric"
               placeholder="KG"
               placeholderTextColor={"rgba(255, 255, 255, 0.6)"}
               value={peso}
@@ -80,9 +94,10 @@ export default function ExercicioSelecionado({ route }) {
             />
           </View>
 
-          <View style={styles.rep}>
+          <View>
             <Text style={styles.rep1}>Repetições</Text>
             <StyledTextInput
+              keyboardType="numeric"
               placeholder="N. Repetições"
               placeholderTextColor={"rgba(255, 255, 255, 0.6)"}
               value={repeticoes}
@@ -90,9 +105,7 @@ export default function ExercicioSelecionado({ route }) {
             />
           </View>
 
-          <TouchableOpacity
-            onPress={handleAdicionarHistorico}
-          >
+          <TouchableOpacity onPress={handleAdicionarHistorico}>
             <Feather name="plus-circle" size={30} color={"#F4485E"} />
           </TouchableOpacity>
         </View>

@@ -14,6 +14,9 @@ import ExercicioSelecionado from "./src/screens/Treinos/TreinoSelecionado/Exerci
 
 const Stack = createStackNavigator();
 
+console.disableYellowBox = true;
+console.disableRedBox = true;
+
 const App = () => {
   return (
     <NavigationContainer>
