@@ -18,12 +18,12 @@ export default function Configuracoes() {
   const [userInfo, setUserInfo] = useState({
     email: "",
     usuario: "",
-    kg: "",
+    peso: "",
     altura: "",
   });
   const [nomeCompleto, setNomeCompleto] = useState("");
   const [email, setEmail] = useState("");
-  const [kg, setKg] = useState("");
+  const [peso, setPeso] = useState("");
   const [altura, setAltura] = useState("");
   const [editavel, setEditavel] = useState(false);
 
@@ -120,8 +120,8 @@ export default function Configuracoes() {
             <Text style={styles.title}>Peso (kg): </Text>
             <TextInput
               style={editavel ? styles.inputEditavel : styles.inputNaoEditavel}
-              value={userInfo.kg}
-              onChangeText={(text) => setKg(text)}
+              value={userInfo.peso}
+              onChangeText={(text) => setPeso(text)}
               editable={editavel}
             />
           </View>
@@ -139,7 +139,7 @@ export default function Configuracoes() {
 
         <View style={styles.buttonsContainer}>
           <TouchableOpacity
-            style={[styles.botao, styles.logoutButton]}
+            style={styles.botao}
             onPress={logout}
           >
             <Text style={styles.logoutText}>LOGOUT</Text>

@@ -10,7 +10,7 @@ import {
 
 export const auth = getAuth(app);
 
-export async function registerUser(email, senha, nomeCompleto) {
+export async function registerUser(email, senha, nomeCompleto, altura, peso) {
   try {
     const userCredential = await createUserWithEmailAndPassword(
       auth,
@@ -20,7 +20,7 @@ export async function registerUser(email, senha, nomeCompleto) {
     const uid = userCredential.user.uid;
 
     // Salva informações no Realtime Database
-    await saveUserInfo(uid, { email, nomeCompleto, senha });
+    await saveUserInfo(uid, { email, nomeCompleto, senha, altura, peso });
 
     console.log(
       "Usuário registrado com sucesso e informações salvas no banco de dados."

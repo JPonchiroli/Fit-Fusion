@@ -12,6 +12,7 @@ import {
   ScrollView,
 } from "react-native";
 import Ionicons from "@expo/vector-icons/Ionicons";
+import { MaterialIcons } from '@expo/vector-icons';
 import { registerUser } from "../../config/firebaseAuth";
 import { useNavigation } from "@react-navigation/native";
 
@@ -19,10 +20,12 @@ console.disableYellowBox = true;
 
 export default function Home() {
   const navigation = useNavigation()
-  
+
   const [email, setEmail] = useState("");
   const [nomeCompleto, setNomeCompleto] = useState("");
   const [senha, setSenha] = useState("");
+  const [altura, setAltura] = useState("");
+  const [peso, setPeso] = useState("");
   const [confirmarSenha, setConfirmarSenha] = useState("");
 
   async function handleCadastro() {
@@ -61,15 +64,25 @@ export default function Home() {
       return;
     }
 
+    if (peso === "") {
+      Alert.alert("Erro", "Peso deve ser preenchido");
+      return;
+    }
+
+    if (altura === "") {
+      Alert.alert("Erro", "Altura deve ser preenchido");
+      return;
+    }
+
     try {
-      await registerUser(email, nomeCompleto, senha);
+      await registerUser(email, nomeCompleto, senha, altura, peso);
       navigation.goBack()
     } catch (error) {
       // Lida com erros de registro
     }
   }
 
-  function hasAccount(){
+  function hasAccount() {
     navigation.goBack()
   }
 
@@ -81,7 +94,6 @@ export default function Home() {
         <View style={styles.inputUsuario}>
           <Ionicons
             name="mail"
-            id="input-usuario"
             size={32}
             color="#fff"
             style={styles.icon}
@@ -100,7 +112,6 @@ export default function Home() {
         <View style={styles.inputUsuario}>
           <Ionicons
             name="person"
-            id="input-usuario"
             size={32}
             color="#fff"
             style={styles.icon}
@@ -117,9 +128,46 @@ export default function Home() {
         </View>
 
         <View style={styles.inputUsuario}>
+          <MaterialIcons
+            name="fitness-center"
+            size={32}
+            color="#fff"
+            style={styles.icon}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Peso (kg)"
+            keyboardType="numeric"
+            fontSize={16}
+            placeholderTextColor={"#fff"}
+            color={"#fff"}
+            value={peso}
+            onChangeText={(text) => setPeso(text)}
+          />
+        </View>
+
+        <View style={styles.inputUsuario}>
+          <Ionicons
+            name="today"
+            size={32}
+            color="#fff"
+            style={styles.icon}
+          />
+          <TextInput
+            style={styles.input}
+            placeholder="Altura (m)"
+            keyboardType="numeric"
+            fontSize={16}
+            placeholderTextColor={"#fff"}
+            color={"#fff"}
+            value={altura}
+            onChangeText={(text) => setAltura(text)}
+          />
+        </View>
+
+        <View style={styles.inputUsuario}>
           <Ionicons
             name="lock-closed"
-            id="input-icon-senha"
             size={32}
             color="#fff"
             style={styles.icon}
@@ -127,7 +175,6 @@ export default function Home() {
           <TextInput
             style={styles.input}
             placeholder="Senha"
-            id="input-senha"
             fontSize={16}
             placeholderTextColor={"#fff"}
             color={"#fff"}
@@ -138,7 +185,6 @@ export default function Home() {
         <View style={styles.inputUsuario}>
           <Ionicons
             name="lock-closed"
-            id="input-icon-senha"
             size={32}
             color="#fff"
             style={styles.icon}
@@ -146,7 +192,6 @@ export default function Home() {
           <TextInput
             style={styles.input}
             placeholder="Confirmar Senha"
-            id="input-confirmar-senha"
             fontSize={16}
             placeholderTextColor={"#fff"}
             color={"#fff"}

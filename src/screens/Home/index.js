@@ -39,8 +39,6 @@ export default function Home({ navigation }) {
     return trainingImages[randomIndex];
   };
 
-  const selectedImage = getRandomImage();
-
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
@@ -100,45 +98,73 @@ export default function Home({ navigation }) {
 
         <View style={styles.treinoss}>
           <Text style={styles.titleSection}>Meus Treinos</Text>
-          <Text style={styles.subTitleSection}>
-            Aqui está listado todos os seus treinos
-          </Text>
-          <View style={styles.divider}></View>
-          <ScrollView
-            horizontal={true} // Enable horizontal scrolling
-            style={styles.scrollViewMenu}
-          >
-            {treinosDoUsuario
-              .map(
-                (treino, index) =>
-                  treinosDoUsuario[treinosDoUsuario.length - 1 - index]
-              ) // Mapeia de trás para frente
-              .map((treino, index) => (
+          {treinosDoUsuario.length === 0 && (
+            <>
+              <Text style={styles.subTitleSection}>
+                Parece que você ainda não tem nenhum treino cadastrado.
+              </Text>
+              <View style={styles.divider}></View>
+              <Text style={styles.subTitleSection}>
+                Adicione
+                um novo treino para começar sua jornada de exercícios!
+              </Text>
+              <View style={styles.buttonsContainer}>
                 <TouchableOpacity
-                  style={styles.touchableItem}
-                  key={index}
-                  onPress={() =>
-                    navigation.navigate("TreinoSelecionado", { treino })
-                  }
+                  style={styles.botao}
+                  onPress={() => {navigation.navigate('Treinos')}}
                 >
-                  <ImageBackground
-                    source={getRandomImage()}
-                    style={styles.backgroundImage}
-                    imageStyle={styles.imageStyle}
-                  >
-                    <LinearGradient
-                      style={styles.linearGradientOverlay}
-                      colors={["rgba(9, 9, 9, 9)", "transparent"]} // Inverta as cores aqui
-                      start={{ x: 0, y: 1 }}
-                      end={{ x: 1, y: 0 }}
-                    >
-                      <Text style={styles.titleCardSubtitle}>A seguir:</Text>
-                      <Text style={styles.titleCard}>{treino.nomeTreino}</Text>
-                    </LinearGradient>
-                  </ImageBackground>
+                  <Text style={styles.logoutText}>Criar Treino</Text>
                 </TouchableOpacity>
-              ))}
-          </ScrollView>
+              </View>
+            </>
+          )}
+          {treinosDoUsuario.length > 0 && (
+            <>
+              <Text style={styles.subTitleSection}>
+                Aqui está listado todos os seus treinos
+              </Text>
+              <View style={styles.divider}></View>
+              <ScrollView
+                horizontal={true} // Enable horizontal scrolling
+                style={styles.scrollViewMenu}
+              >
+                {treinosDoUsuario
+                  .map(
+                    (treino, index) =>
+                      treinosDoUsuario[treinosDoUsuario.length - 1 - index]
+                  ) // Mapeia de trás para frente
+                  .map((treino, index) => (
+                    <TouchableOpacity
+                      style={styles.touchableItem}
+                      key={index}
+                      onPress={() =>
+                        navigation.navigate("TreinoSelecionado", { treino })
+                      }
+                    >
+                      <ImageBackground
+                        source={getRandomImage()}
+                        style={styles.backgroundImage}
+                        imageStyle={styles.imageStyle}
+                      >
+                        <LinearGradient
+                          style={styles.linearGradientOverlay}
+                          colors={["rgba(9, 9, 9, 9)", "transparent"]} // Inverta as cores aqui
+                          start={{ x: 0, y: 1 }}
+                          end={{ x: 1, y: 0 }}
+                        >
+                          <Text style={styles.titleCardSubtitle}>
+                            A seguir:
+                          </Text>
+                          <Text style={styles.titleCard}>
+                            {treino.nomeTreino}
+                          </Text>
+                        </LinearGradient>
+                      </ImageBackground>
+                    </TouchableOpacity>
+                  ))}
+              </ScrollView>
+            </>
+          )}
         </View>
 
         <View style={styles.treinoss}>
@@ -158,8 +184,12 @@ export default function Home({ navigation }) {
               <>
                 <View style={styles.AcountTextContainer}>
                   <Text style={styles.title0}>Nome: {userInfo.usuario}</Text>
-                  <Text style={styles.title0}>Peso: {userInfo.kg} kg</Text>
-                  <Text style={styles.title0}>Altura: {userInfo.altura} m</Text>
+                  <Text style={styles.title0}>
+                    Peso: {userInfo.peso} kg
+                  </Text>
+                  <Text style={styles.title0}>
+                    Altura: {userInfo.altura} m
+                  </Text>
                 </View>
               </>
             )}
@@ -168,6 +198,7 @@ export default function Home({ navigation }) {
       </LinearGradient>
     </ScrollView>
   );
+
 }
 
 const styles = StyleSheet.create({
@@ -264,5 +295,33 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 30, // ajuste conforme necessário
     left: 10, // ajuste conforme necessário
+  },
+  messageContainer: {
+    width: "100%",
+    paddingHorizontal: 20,
+    marginBottom: 10,
+  },
+  message: {
+    color: "#d4d4d4",
+    fontSize: 16,
+    textAlign: "center",
+  },
+  buttonsContainer: {
+    display: "flex",
+    flexDirection: "column",
+    alignItems: "center",
+    marginTop: 30,
+  },
+  botao: {
+    backgroundColor: "rgba(255, 57, 83, 1)",
+    padding: 10,
+    alignItems: "center",
+    width: "40%",
+    borderRadius: 30,
+    marginBottom: 10,
+  },
+  logoutText: {
+    fontWeight: "bold",
+    color: "#fff",
   },
 });

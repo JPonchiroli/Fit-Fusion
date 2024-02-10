@@ -168,7 +168,7 @@ export default function Home({ navigation }) {
                 </TouchableOpacity>
               ))
             ) : (
-              <Text>Não há treinos disponíveis.</Text>
+              <Text style={{color: 'white'}}>Crie Seu Primeiro Treino</Text>
             )}
           </ScrollView>
           <View style={styles.touchable2}>

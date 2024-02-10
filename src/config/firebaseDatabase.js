@@ -35,7 +35,7 @@ export const recuperaInfoUsuario = async (uid, setUserInfo) => {
         ...prevUserInfo,
         email: usuarioInfo.email,
         usuario: usuarioInfo.nomeCompleto,
-        kg: usuarioInfo.kg,
+        peso: usuarioInfo.peso,
         altura: usuarioInfo.altura,
       }));
     } else {
