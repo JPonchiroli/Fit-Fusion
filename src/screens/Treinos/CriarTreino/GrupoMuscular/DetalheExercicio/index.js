@@ -24,7 +24,7 @@ export default function DetalhesExercicio() {
   const usuarioUID = auth.currentUser.uid;
   const treinoUid = treinoUID.treinoUID;
   const idImagem = exercicio.idImagem;
-  const nomeExercicio = exercicio.nome 
+  const nomeExercicio = exercicio.nome;
 
   useEffect(() => {
     const carregarImagemExercicio = async () => {
@@ -44,19 +44,19 @@ export default function DetalhesExercicio() {
     carregarImagemExercicio();
   }, []);
 
-  function handleAdicionarExercicio(){
-    adicionarExercicio(usuarioUID, treinoUid, idImagem, nomeExercicio)
+  function handleAdicionarExercicio() {
+    adicionarExercicio(usuarioUID, treinoUid, idImagem, nomeExercicio);
 
     Toast.show({
-      type: 'success',
-      position: 'top',
-      text1: 'Exercicio adicionado!',
+      type: "success",
+      position: "top",
+      text1: "Exercicio adicionado!",
       theme: "dark",
       progress: undefined,
       visibilityTime: 2000,
-  });
+    });
 
-    navigation.goBack()
+    navigation.goBack();
   }
 
   return (
@@ -81,7 +81,8 @@ export default function DetalhesExercicio() {
         <Text style={styles.description}>{exercicio.execucao}</Text>
       </ScrollView>
       <TouchableOpacity
-        onPress={handleAdicionarExercicio} style={styles.addButton}
+        onPress={handleAdicionarExercicio}
+        style={styles.addButton}
       >
         <Text style={styles.addButtonText}>Adicionar Exercício</Text>
       </TouchableOpacity>
@@ -122,9 +123,9 @@ const styles = StyleSheet.create({
   },
   descriptionContainer: {
     flex: 1,
-    height: "10%",
     marginBottom: 16,
-    padding: 30,
+    paddingHorizontal: 30,
+    paddingTop: 30
   },
   description: {
     color: "#fff",

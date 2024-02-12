@@ -4,19 +4,15 @@ import { createStackNavigator } from "@react-navigation/stack";
 import Toast from "react-native-toast-message";
 
 import Login from "./src/screens/Login";
-import CreateAccount from "./src/screens/CreateAccount";
 import TabScreen from "./src/screens/TabScreen";
+import CreateAccount from "./src/screens/CreateAccount";
 import CriarTreino from "./src/screens/Treinos/CriarTreino";
-import GrupoMuscular from './src/screens/Treinos/CriarTreino/GrupoMuscular';
-import DetalheExercicio from './src/screens/Treinos/CriarTreino/GrupoMuscular/DetalheExercicio';
 import TreinoSelecionado from "./src/screens/Treinos/TreinoSelecionado";
+import GrupoMuscular from './src/screens/Treinos/CriarTreino/GrupoMuscular';
 import ExercicioSelecionado from "./src/screens/Treinos/TreinoSelecionado/ExercicioSelecionado";
+import DetalheExercicio from './src/screens/Treinos/CriarTreino/GrupoMuscular/DetalheExercicio';
 
 const Stack = createStackNavigator();
-
-console.disableYellowBox = true;
-console.disableRedBox = true;
-
 const App = () => {
   return (
     <NavigationContainer>

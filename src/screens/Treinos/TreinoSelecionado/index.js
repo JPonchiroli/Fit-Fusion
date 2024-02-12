@@ -156,8 +156,8 @@ const TreinoSelecionado = ({ route }) => {
           <View style={styles.titleSView}>
             <Feather
               style={styles.viewX}
-              name="frown"
-              size={120}
+              name="refresh-cw"
+              size={110}
               color={"rgba(255, 57, 83, 1)"}
               onPress={() => navigation.navigate("Treinos")}
             />
@@ -263,7 +263,6 @@ const styles = StyleSheet.create({
     alignContent: "center",
   },
   touchableExercise: {
-    // Adicione os estilos desejados para o TouchableOpacity dos exercícios
     marginBottom: 10,
     padding: 10,
     backgroundColor: "#333",
@@ -272,7 +271,6 @@ const styles = StyleSheet.create({
   lastExerciseStyle: {
     paddingBottom: 10, // Ou qualquer valor desejado para o paddingBottom
   },
-
   scrollviewTreino: {
     height: "5%",
   },
