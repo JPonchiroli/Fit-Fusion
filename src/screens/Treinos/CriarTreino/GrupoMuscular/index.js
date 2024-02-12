@@ -1,5 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet, FlatList, Image, TouchableOpacity } from "react-native";
+import {
+  View,
+  Text,
+  StyleSheet,
+  FlatList,
+  Image,
+  TouchableOpacity,
+} from "react-native";
 import { auth } from "../../../../config/firebaseConfig";
 import { recuperaExerciciosDoUsuario } from "../../../../config/firebaseDatabase";
 import { Feather } from "@expo/vector-icons";
@@ -8,21 +15,26 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 export default function GrupoMuscular() {
   const route = useRoute();
   const [exercicios, setExercicios] = useState([]);
+  const [exerciciosCarregados, setExerciciosCarregados] = useState(false);
   const navigation = useNavigation();
 
   const { grupoMuscular } = route.params;
   const { treinoUID } = route.params;
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        recuperaExerciciosDoUsuario(grupoMuscular, setExercicios);
-      }
-    });
-    return () => unsubscribe();
-  }, [grupoMuscular, exercicios]);
 
+  useEffect(() => {
+    if (!exerciciosCarregados) {
+      recuperaExerciciosDoUsuario(grupoMuscular, setExercicios);
+      setExerciciosCarregados(true);
+    }
+  }, [grupoMuscular, exerciciosCarregados]);
+
+  
   const handleExerciseClick = (item) => {
-    navigation.navigate('DetalheExercicio', { exercicio: item,  treinoUID: treinoUID, grupoMuscular: grupoMuscular });
+    navigation.navigate("DetalheExercicio", {
+      exercicio: item,
+      treinoUID: treinoUID,
+      grupoMuscular: grupoMuscular,
+    });
   };
 
   const renderExerciseItem = ({ item }) => (
@@ -43,15 +55,13 @@ export default function GrupoMuscular() {
           name="arrow-left-circle"
           size={30}
           color={"#fff"}
-          onPress={() =>
-            navigation.goBack()}
+          onPress={() => navigation.goBack()}
         />
-
       </View>
       <FlatList
         style={styles.flatList}
         data={exercicios}
-        keyExtractor={(item, index) => item.id?.toString() ?? index.toString()} 
+        keyExtractor={(item, index) => item.id?.toString() ?? index.toString()}
         renderItem={renderExerciseItem}
       />
     </View>

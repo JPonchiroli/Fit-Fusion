@@ -15,7 +15,6 @@ const CriarTreino = () => {
   const route = useRoute();
   const navigation = useNavigation();
   const treinoUID = route.params;
-  console.log(treinoUID.treinoUID)
   const musculoEscolhido = [
     { nome: "Peito", imagem: require("../../../img/peito.png") },
     { nome: "Ombro", imagem: require("../../../img/ombro.jpg") },
@@ -47,7 +46,7 @@ const CriarTreino = () => {
           name="arrow-left-circle"
           size={30}
           color={"#fff"}
-          onPress={() => navigation.goBack()}
+          onPress={() => navigation.navigate("Treinos")}
         />
       </View>
 

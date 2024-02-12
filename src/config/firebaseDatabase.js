@@ -78,26 +78,20 @@ export const deletarTreino = async (usuarioUID, treinoUID) => {
 
 export const recuperaExerciciosDoUsuario = async (grupoMuscular, setExerciciosDoUsuario) => {
   try {
-    const snapshot = await ref(database, `exercicios/${grupoMuscular}/`);
-    onValue(snapshot, (data) => {
-      if (data.exists()) {
-        const treinosUsuarioData = data.val();
-        const treinosUsuarioArray = Object.keys(treinosUsuarioData).map(
-          (treinoUid) => ({
-            treinoUid,
-            ...treinosUsuarioData[treinoUid],
-          })
-        );
-        setExerciciosDoUsuario(treinosUsuarioArray);
+    const exerciciosRef = ref(database, `exercicios/${grupoMuscular}/`);
+    onValue(exerciciosRef, (snapshot) => {
+      const data = snapshot.val();
+      if (data) {
+        const exerciciosArray = Object.values(data);
+        setExerciciosDoUsuario(exerciciosArray);
       } else {
-        console.log("Nenhum treino encontrado para o usuário.");
+        console.log("Nenhum exercício encontrado para o grupo muscular:", grupoMuscular);
       }
     });
   } catch (error) {
-    console.error("Erro ao recuperar treinos do usuário:", error);
+    console.error("Erro ao recuperar exercícios do usuário:", error);
   }
 };
-
 export const adicionarExercicio = async (usuarioUID, treinoUid, idImagem, nomeExercicio) => {
   try {
     if (usuarioUID) {
