@@ -18,3 +18,9 @@ Este é um projeto de aplicativo desenvolvido no curso Entra21 com React Native 
   - **Realtime Database:** Banco de dados em tempo real para armazenamento dos dados do aplicativo.
   - **Authentication:** Serviço de autenticação de usuários.
   - **Storage:** Serviço para armazenamento de imagens e outros arquivos.
+
+## Desenvolvedores 
+
+-[João Ponchiroli](https://github.com/JPonchiroli)
+-[Gabriel Sgaria](https://github.com/mypromail)
+-[Marcelo Junior](https://github.com/thegomdev)
