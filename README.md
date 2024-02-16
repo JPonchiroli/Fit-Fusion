@@ -21,6 +21,6 @@ Este é um projeto de aplicativo desenvolvido no curso Entra21 com React Native 
 
 ## Desenvolvedores 
 
--[João Ponchiroli](https://github.com/JPonchiroli)
--[Gabriel Sgaria](https://github.com/mypromail)
--[Marcelo Junior](https://github.com/thegomdev)
+- [João Ponchiroli](https://github.com/JPonchiroli)
+- [Gabriel Sgaria](https://github.com/mypromail)
+- [Marcelo Junior](https://github.com/thegomdev)
