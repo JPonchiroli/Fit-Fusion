@@ -1,4 +1,4 @@
-# Fit-Fusion
+# Fit-Fusion <img alt="React Native" src="https://img.shields.io/badge/React_Native-20232A?style=for-the-badge&logo=react&logoColor=61DAFB">
 
 Este é um projeto de aplicativo desenvolvido no curso Entra21 com React Native e Expo, utilizando Firebase para o back-end. O aplicativo permite aos usuários criar e gerenciar treinos fitness, com exercícios pré-cadastrados incluindo gifs para ilustração dos movimentos.
 
