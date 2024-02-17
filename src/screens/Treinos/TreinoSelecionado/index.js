@@ -119,7 +119,7 @@ const TreinoSelecionado = ({ route }) => {
       <ScrollView style={styles.scrollviewTreino}>
         {Array.isArray(imagensExercicios) && imagensExercicios.length > 0 ? (
           imagensExercicios.map((exercicio, index) => (
-            <View>
+            <View key={exercicio.nomeExercicio}>
               <TouchableOpacity
                 key={exercicio.nomeExercicio}
                 style={[

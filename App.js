@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef, useEffect } from "react";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import Toast from "react-native-toast-message";
@@ -8,12 +8,26 @@ import TabScreen from "./src/screens/TabScreen";
 import CreateAccount from "./src/screens/CreateAccount";
 import CriarTreino from "./src/screens/Treinos/CriarTreino";
 import TreinoSelecionado from "./src/screens/Treinos/TreinoSelecionado";
-import GrupoMuscular from './src/screens/Treinos/CriarTreino/GrupoMuscular';
+import GrupoMuscular from "./src/screens/Treinos/CriarTreino/GrupoMuscular";
 import ExercicioSelecionado from "./src/screens/Treinos/TreinoSelecionado/ExercicioSelecionado";
-import DetalheExercicio from './src/screens/Treinos/CriarTreino/GrupoMuscular/DetalheExercicio';
+import DetalheExercicio from "./src/screens/Treinos/CriarTreino/GrupoMuscular/DetalheExercicio";
 
 const Stack = createStackNavigator();
+
+const ToastWithRef = forwardRef((props, ref) => {
+  useEffect(() => {
+    // Definindo a ref do Toast assim que o componente for montado
+    if (ref) {
+      ref.current = Toast;
+    }
+  }, [ref]);
+
+  return <Toast {...props} />;
+});
+
 const App = () => {
+  const toastRef = React.useRef(null);
+
   return (
     <NavigationContainer>
       <Stack.Navigator>
@@ -42,7 +56,7 @@ const App = () => {
           component={ExercicioSelecionado}
           options={{ headerShown: false }}
         />
-          <Stack.Screen
+        <Stack.Screen
           name="CriarTreino"
           component={CriarTreino}
           options={{ headerShown: false }}
@@ -58,7 +72,7 @@ const App = () => {
           options={{ headerShown: false }}
         />
       </Stack.Navigator>
-      <Toast ref={(ref) => Toast.setRef(ref)} />
+      <ToastWithRef ref={toastRef} />
     </NavigationContainer>
   );
 };

@@ -158,7 +158,7 @@ export default function Home({ navigation }) {
               treinosDoUsuario.map((treino, index) => (
                 <TouchableOpacity
                   style={styles.touchable}
-                  key={treino.uid}
+                  key={treino.treinoUid}
                   onPress={() =>
                     navigation.navigate("TreinoSelecionado", { treino })
                   }

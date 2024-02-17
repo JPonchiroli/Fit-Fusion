@@ -6,17 +6,22 @@ import {
   StyleSheet,
   TouchableOpacity,
   TextInput,
-  Image
+  Image,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { recuperaInfoUsuario } from "../../config/firebaseDatabase";
+import {
+  confirmaEdicao,
+  recuperaInfoUsuario,
+} from "../../config/firebaseDatabase";
 import { auth } from "../../config/firebaseConfig";
 
 export default function Configuracoes() {
   const navigation = useNavigation();
+  const uid = auth.currentUser.uid;
+  const user = auth.currentUser;
 
   const [userInfo, setUserInfo] = useState({
-    email: "",
+    email: user.email,
     usuario: "",
     peso: "",
     altura: "",
@@ -37,15 +42,32 @@ export default function Configuracoes() {
   }, [navigation]);
 
   useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (user) => {
-      if (user) {
-        setUserInfo(user);
+    const loadUserInfo = async () => {
+      const userData = await recuperaInfoUsuario(uid);
+      
+      setEmail(userData.email);
+      setNomeCompleto(userData.nomeCompleto);
+      setPeso(userData.peso);
+      setAltura(userData.altura);
+    };
 
-        // Substitua o código abaixo para usar as novas funções
-        recuperaInfoUsuario(user.uid, setUserInfo);
-      }
-    });
-  }, []);
+    if (user) {
+      loadUserInfo();
+    }
+  }, [user, uid]);
+
+  const confirmaEdicaoCallback = async () => {
+    try {
+      await confirmaEdicao(uid, nomeCompleto, peso, altura);
+      setEditavel(false);
+    } catch (error) {
+      console.error("Erro ao confirmar edição do perfil:", error.message);
+    }
+  };
+
+  function atualizarPerfil() {
+    setEditavel(!editavel);
+  }
 
   return (
     <View style={styles.container}>
@@ -91,60 +113,87 @@ export default function Configuracoes() {
 
         <View style={styles.treinoss}>
           <Text style={styles.titleSection}>Minha conta</Text>
-          <Text style={styles.subTitleSection}>Aqui está o status de sua conta</Text>
+          <Text style={styles.subTitleSection}>
+            Aqui está o status de sua conta
+          </Text>
           <View style={styles.divider}></View>
-        
 
-        <View style={styles.AcountTextContainer}>
-          <View style={styles.inputContainer}>
-            <Text style={styles.title}>Nome Completo: </Text>
-            <TextInput
-              style={editavel ? styles.inputEditavel : styles.inputNaoEditavel}
-              value={userInfo.usuario}
-              onChangeText={(text) => setNomeCompleto(text)}
-              editable={editavel}
-            />
+          <View style={styles.AcountTextContainer}>
+            <View style={styles.inputContainer}>
+              <Text style={styles.title}>Email: </Text>
+              <TextInput
+                style={styles.title}
+                value={email}
+                onChangeText={(text) => setEmail(text)}
+                editable={editavel}
+              />
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={styles.title}>Nome Completo: </Text>
+              <TextInput
+                style={
+                  editavel ? styles.inputEditavel : styles.inputNaoEditavel
+                }
+                value={nomeCompleto}
+                onChangeText={(text) => setNomeCompleto(text)}
+                editable={editavel}
+              />
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={styles.title}>Peso (kg): </Text>
+              <TextInput
+                style={
+                  editavel ? styles.inputEditavel : styles.inputNaoEditavel
+                }
+                keyboardType="numeric"
+                value={peso}
+                onChangeText={(text) => setPeso(text)}
+                editable={editavel}
+              />
+            </View>
+
+            <View style={styles.inputContainer}>
+              <Text style={styles.title}>Altura (m): </Text>
+              <TextInput
+                style={
+                  editavel ? styles.inputEditavel : styles.inputNaoEditavel
+                }
+                keyboardType="numeric"
+                value={altura}
+                onChangeText={(text) => setAltura(text)}
+                editable={editavel}
+              />
+            </View>
           </View>
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.title}>Email: </Text>
-            <TextInput
-              style={styles.title}
-              value={userInfo.email}
-              onChangeText={(text) => setEmail(text)}
-              editable={editavel}
-            />
+          <View style={styles.buttonsContainer}>
+            {editavel ? (
+              <TouchableOpacity
+                style={styles.botao}
+                onPress={confirmaEdicaoCallback}
+              >
+                <Text style={styles.logoutText}>Confirmar Edição</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity style={styles.botao} onPress={atualizarPerfil}>
+                <Text style={styles.logoutText}>Editar Perfil</Text>
+              </TouchableOpacity>
+            )}
           </View>
 
-          <View style={styles.inputContainer}>
-            <Text style={styles.title}>Peso (kg): </Text>
-            <TextInput
-              style={editavel ? styles.inputEditavel : styles.inputNaoEditavel}
-              value={userInfo.peso}
-              onChangeText={(text) => setPeso(text)}
-              editable={editavel}
-            />
+          <View style={styles.buttonsContainer}>
+            {editavel ? (
+              <TouchableOpacity style={styles.botao} onPress={atualizarPerfil}>
+                <Text style={styles.logoutText}>Cancelar Edição</Text>
+              </TouchableOpacity>
+            ) : (
+              <TouchableOpacity style={styles.botao} onPress={logout}>
+                <Text style={styles.logoutText}>LOGOUT</Text>
+              </TouchableOpacity>
+            )}
           </View>
-
-          <View style={styles.inputContainer}>
-            <Text style={styles.title}>Altura (m): </Text>
-            <TextInput
-              style={editavel ? styles.inputEditavel : styles.inputNaoEditavel}
-              value={userInfo.altura}
-              onChangeText={(text) => setAltura(text)}
-              editable={editavel}
-            />
-          </View>
-        </View>
-
-        <View style={styles.buttonsContainer}>
-          <TouchableOpacity
-            style={styles.botao}
-            onPress={logout}
-          >
-            <Text style={styles.logoutText}>LOGOUT</Text>
-          </TouchableOpacity>
-        </View>
         </View>
       </LinearGradient>
     </View>
@@ -158,34 +207,34 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   header: {
-    alignItems: 'center',
-    justifyContent: 'center',
-    width: '100%',
-    height: '100%',
-    paddingTop: 20
+    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
+    height: "100%",
+    paddingTop: 20,
   },
   headerImage: {
-    width: '25%',
-    height: '100%',
+    width: "25%",
+    height: "100%",
     marginBottom: 20,
-  }, 
+  },
   treinoss: {
     padding: 20,
     margin: 10,
   },
   titleSection: {
-    color: '#fff',
+    color: "#fff",
     fontSize: 19,
-    fontWeight: 'bold',
+    fontWeight: "bold",
   },
   subTitleSection: {
-    color: '#d4d4d4',
+    color: "#d4d4d4",
     fontSize: 16,
   },
   divider: {
-    borderBottomColor: '#d4d4d4', // Set the color of the divider line
-    borderBottomWidth: 0.2,     // Set the thickness of the divider line
-    marginVertical: 10,       // Adjust the vertical spacing as needed
+    borderBottomColor: "#d4d4d4", // Set the color of the divider line
+    borderBottomWidth: 0.2, // Set the thickness of the divider line
+    marginVertical: 10, // Adjust the vertical spacing as needed
   },
   inputContainer: {
     flexDirection: "row",
@@ -209,7 +258,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     borderBottomColor: "#FFF",
     borderBottomWidth: 2,
-    borderBottomStyle: "solid",
+    borderStyle: "solid",
     padding: 1,
   },
   AcountTextContainer: {

@@ -17,9 +17,13 @@ import { auth } from "../../config/firebaseConfig";
 import { Feather } from "@expo/vector-icons";
 
 export default function Home({ navigation }) {
-  const [userInfo, setUserInfo] = useState(null);
+  const [userInfo, setUserInfo] = useState({
+    usuario: "",
+    peso: "",
+    altura: "",
+  });
+  const [uid, setUid] = useState(null);
   const [treinosDoUsuario, setTreinosDoUsuario] = useState([]);
-  const [exerciciosDoUsuario, setExerciciosDoUsuario] = useState([]);
   const trainingImages = [
     require("./../../img/Imagens-fig/0.png"),
     require("./../../img/Imagens-fig/1.png"),
@@ -33,7 +37,6 @@ export default function Home({ navigation }) {
     require("./../../img/Imagens-fig/9.png"),
     require("./../../img/Imagens-fig/10.png"),
   ];
-
   const getRandomImage = () => {
     const randomIndex = Math.floor(Math.random() * trainingImages.length);
     return trainingImages[randomIndex];
@@ -42,11 +45,11 @@ export default function Home({ navigation }) {
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (user) => {
       if (user) {
-        setUserInfo(user);
+        setUid(user);
 
         // Substitua o código abaixo para usar as novas funções
-        recuperaInfoUsuario(user.uid, setUserInfo);
-
+        const userData = await recuperaInfoUsuario(user.uid);
+        setUserInfo(userData);
         // Substitua a chamada da função recuperaTreinosDoUsuario
         recuperaTreinosDoUsuario(user.uid, setTreinosDoUsuario);
       }
@@ -105,13 +108,14 @@ export default function Home({ navigation }) {
               </Text>
               <View style={styles.divider}></View>
               <Text style={styles.subTitleSection}>
-                Adicione
-                um novo treino para começar sua jornada de exercícios!
+                Adicione um novo treino para começar sua jornada de exercícios!
               </Text>
               <View style={styles.buttonsContainer}>
                 <TouchableOpacity
                   style={styles.botao}
-                  onPress={() => {navigation.navigate('Treinos')}}
+                  onPress={() => {
+                    navigation.navigate("Treinos");
+                  }}
                 >
                   <Text style={styles.logoutText}>Criar Treino</Text>
                 </TouchableOpacity>
@@ -132,36 +136,39 @@ export default function Home({ navigation }) {
                   .map(
                     (treino, index) =>
                       treinosDoUsuario[treinosDoUsuario.length - 1 - index]
-                  ) // Mapeia de trás para frente
-                  .map((treino, index) => (
-                    <TouchableOpacity
-                      style={styles.touchableItem}
-                      key={index}
-                      onPress={() =>
-                        navigation.navigate("TreinoSelecionado", { treino })
-                      }
-                    >
-                      <ImageBackground
-                        source={getRandomImage()}
-                        style={styles.backgroundImage}
-                        imageStyle={styles.imageStyle}
+                  ) 
+                  .map((treino, index) => {
+                    const key = `${index}-${treino.treinoUid}`; // Concatenando o índice com um identificador único do treino
+                    return (
+                      <TouchableOpacity
+                        style={styles.touchableItem}
+                        key={key}
+                        onPress={() =>
+                          navigation.navigate("TreinoSelecionado", { treino })
+                        }
                       >
-                        <LinearGradient
-                          style={styles.linearGradientOverlay}
-                          colors={["rgba(9, 9, 9, 9)", "transparent"]} // Inverta as cores aqui
-                          start={{ x: 0, y: 1 }}
-                          end={{ x: 1, y: 0 }}
+                        <ImageBackground
+                          source={getRandomImage()}
+                          style={styles.backgroundImage}
+                          imageStyle={styles.imageStyle}
                         >
-                          <Text style={styles.titleCardSubtitle}>
-                            A seguir:
-                          </Text>
-                          <Text style={styles.titleCard}>
-                            {treino.nomeTreino}
-                          </Text>
-                        </LinearGradient>
-                      </ImageBackground>
-                    </TouchableOpacity>
-                  ))}
+                          <LinearGradient
+                            style={styles.linearGradientOverlay}
+                            colors={["rgba(9, 9, 9, 9)", "transparent"]} // Inverta as cores aqui
+                            start={{ x: 0, y: 1 }}
+                            end={{ x: 1, y: 0 }}
+                          >
+                            <Text style={styles.titleCardSubtitle}>
+                              A seguir:
+                            </Text>
+                            <Text style={styles.titleCard}>
+                              {treino.nomeTreino}
+                            </Text>
+                          </LinearGradient>
+                        </ImageBackground>
+                      </TouchableOpacity>
+                    );
+                  })}
               </ScrollView>
             </>
           )}
@@ -183,13 +190,11 @@ export default function Home({ navigation }) {
             {userInfo && (
               <>
                 <View style={styles.AcountTextContainer}>
-                  <Text style={styles.title0}>Nome: {userInfo.usuario}</Text>
                   <Text style={styles.title0}>
-                    Peso: {userInfo.peso} kg
+                    Nome: {userInfo.nomeCompleto}
                   </Text>
-                  <Text style={styles.title0}>
-                    Altura: {userInfo.altura} m
-                  </Text>
+                  <Text style={styles.title0}>Peso: {userInfo.peso} kg</Text>
+                  <Text style={styles.title0}>Altura: {userInfo.altura} m</Text>
                 </View>
               </>
             )}
@@ -198,7 +203,6 @@ export default function Home({ navigation }) {
       </LinearGradient>
     </ScrollView>
   );
-
 }
 
 const styles = StyleSheet.create({
