@@ -1,7 +1,7 @@
 {
   "expo": {
-    "name": "Fit-Fusion",
-    "slug": "Fit-Fusion",
+    "name": "FitFusion",
+    "slug": "fit-fusion",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -21,10 +21,17 @@
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "package": "com.jp_ponchiroli.fitfusion"
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "85960bfa-57aa-484b-9f45-00227792af3a"
+      }
+    },
+    "owner": "jp_ponchiroli"
   }
 }
